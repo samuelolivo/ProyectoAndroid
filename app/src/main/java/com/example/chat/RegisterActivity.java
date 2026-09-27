@@ -12,18 +12,24 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.chat.data.User;
 import com.example.chat.databinding.ActivityRegisterBinding;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegisterActivity extends AppCompatActivity {
-
+    private FirebaseAuth fAuth;
     ActivityRegisterBinding bng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        bng = ActivityRegisterBinding.inflate(getLayoutInflater());
        setContentView(bng.getRoot());
+
+       fAuth = FirebaseAuth.getInstance();
 
        bng.btnBackToLogin.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -92,8 +98,31 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if(validated.get()){
-            Intent intent = new Intent(RegisterActivity.this, MainPage.class);
-            startActivity(intent);
+            String nombre= bng.inputNombre.getText().toString().trim();
+            String correo = bng.inputCorreoReg.getText().toString().trim();
+            String password = bng.inputPasswordReg.getText().toString().trim();
+
+            fAuth.createUserWithEmailAndPassword(correo, password).addOnCompleteListener(this, task -> {
+                if(task.isSuccessful()){
+                    String uid = fAuth.getCurrentUser().getUid();
+                    User newUser = new User(uid, nombre, "", true);
+
+                    FirebaseDatabase.getInstance().getReference("Users").child(uid)
+                            .setValue(newUser)
+                            .addOnCompleteListener(dbTask -> {
+                                if(dbTask.isSuccessful()){
+                                    Toast.makeText(RegisterActivity.this, "Cuenta creada exitosamente",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterActivity.this, MainPage.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else {
+                                    Toast.makeText(RegisterActivity.this, "Error al guardar los datos del usuario", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }else {
+                    Toast.makeText(RegisterActivity.this, "Error de registro: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }

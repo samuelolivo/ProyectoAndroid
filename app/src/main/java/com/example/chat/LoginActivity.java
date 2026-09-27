@@ -13,16 +13,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.chat.databinding.ActivityLoginBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoginActivity extends AppCompatActivity {
+    FirebaseAuth fAuth;
     ActivityLoginBinding bng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bng = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(bng.getRoot());
+        fAuth = FirebaseAuth.getInstance();
 
         bng.btnFormToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,44 +47,38 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validateForm(){
-        AtomicBoolean validated = new AtomicBoolean(true);
+            // Sacamos el texto que escribió el usuario
+            String correo = bng.inputCorreo.getText().toString().trim();
+            String password = bng.inputPassword.getText().toString().trim();
 
-        android.content.res.ColorStateList errorColor = android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.bgInputsError)
-        );
-        android.content.res.ColorStateList defaultColor = android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.bgInputs)
-        );
+            // Validaciones súper básicas para que no envíen campos vacíos
+            if (correo.isEmpty()) {
+                bng.inputCorreo.setError("Debe introducir su correo");
+                return; // Detiene el código aquí si está vacío
+            }
 
-        bng.inputCorreo.setBackgroundTintList(defaultColor);
-        bng.inputPassword.setBackgroundTintList(defaultColor);
+            if (password.isEmpty()) {
+                bng.inputPassword.setError("Debe introducir su contraseña");
+                return;
+            }
 
+            // 4. Le pedimos a Firebase que verifique si el usuario existe
+            fAuth.signInWithEmailAndPassword(correo, password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // ¡Exito! Las credenciales son correctas
+                            Toast.makeText(LoginActivity.this, "¡Inicio de sesión exitoso!", Toast.LENGTH_SHORT).show();
 
-        if(bng.inputCorreo.getText() == null || bng.inputCorreo.getText().toString().isEmpty()){
-            bng.inputCorreo.setError("Debe Introducir su correo");
-            bng.inputCorreo.setBackgroundTintList(errorColor);
-            validated.set(false);
-        }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(bng.inputCorreo.getText().toString().trim()).matches()) {
-            bng.inputCorreo.setError("Por favor, ingresa un correo válido");
-            bng.inputCorreo.setBackgroundTintList(errorColor);
-            validated.set(false);
+                            // Viajamos a la página principal
+                            Intent intent = new Intent(LoginActivity.this, MainPage.class);
+                            startActivity(intent);
+
+                            // Cerramos esta pantalla para que no puedan volver atrás con el botón del celular
+                            finish();
+                        } else {
+                            // Fracaso: Correo no existe o contraseña incorrecta
+                            Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Revisa tus datos.", Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
-
-
-        if(bng.inputPassword.getText() == null || bng.inputPassword.getText().toString().isEmpty()){
-            bng.inputPassword.setError("Debe Introducir su Contraseña");
-            bng.inputPassword.setBackgroundTintList(errorColor);
-            validated.set(false);
-        } else if(bng.inputPassword.getText().length() <8){
-            bng.inputPassword.setError("La contraseña deberia tener 8 o mas caracteres");
-            bng.inputPassword.setBackgroundTintList(errorColor);
-            validated.set(false);
-        }
-//validacion de firebase
-
-        if(validated.get()){
-            Intent intent = new Intent(LoginActivity.this, MainPage.class);
-            startActivity(intent);
-        }
-    }
 }

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
+    <!-- 1. Título (Inicia la cadena empaquetada) -->
     <TextView
         android:id="@+id/txtRegister"
         android:layout_width="wrap_content"
@@ -14,11 +15,26 @@
         android:text="@string/txtTitleRegistrar"
         android:textSize="34sp"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintBottom_toTopOf="@+id/inputNombre"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 2. Imagen -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@color/primary"
+        android:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toTopOf="@+id/inputNombre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRegister"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <!-- 3. Nombre -->
     <EditText
         android:id="@+id/inputNombre"
         android:layout_width="250dp"
@@ -34,8 +50,9 @@
         app:layout_constraintBottom_toTopOf="@+id/inputCorreoReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <!-- 4. Correo -->
     <EditText
         android:id="@+id/inputCorreoReg"
         android:layout_width="250dp"
@@ -53,6 +70,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputNombre" />
 
+    <!-- 5. Contraseña -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutPass"
         android:layout_width="250dp"
@@ -78,6 +96,7 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- 6. Confirmar Contraseña -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutConfirmPass"
         android:layout_width="250dp"
@@ -103,6 +122,7 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- 7. Botón Registrarse -->
     <Button
         android:id="@+id/btnFormRegister"
         android:layout_width="250dp"
@@ -115,6 +135,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutConfirmPass" />
 
+    <!-- 8. Botón volver al Login (Termina la cadena) -->
     <Button
         android:id="@+id/btnBackToLogin"
         android:layout_width="wrap_content"
