@@ -1,20 +1,17 @@
 package com.example.chat.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Chat {
     private String idChat;
     private HashMap<String, User> users;
 
-    public Chat () {};
+    public Chat () {}
 
     public Chat(String idChat,
-                List<Message> messagesList,
                 HashMap<String, User> users){
         this.idChat = idChat;
-        this.users = new HashMap<String, User>(users);
+        this.users = new HashMap<>(users);
     }
     public String getIdChat() {
         return idChat;

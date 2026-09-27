@@ -13,7 +13,7 @@ public class Message {
     private boolean deleted, edited;
     private long timeStamp;
 
-    public Message () {};
+    public Message () {}
     public Message (String idMessage,
                     String idChat,
                     String idUserSender,
@@ -28,7 +28,7 @@ public class Message {
         this.idUserSender = idUserSender;
         this.content = content;
         this.type = type;
-        this.readBy = new ArrayList<String>(readBy);
+        this.readBy = new ArrayList<>(readBy);
         this.deleted = deleted;
         this.edited = edited;
         this.timeStamp = timeStamp;

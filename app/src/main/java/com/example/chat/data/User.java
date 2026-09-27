@@ -6,7 +6,7 @@ public class User {
     private String pictureProfile;
     private boolean online;
 
-    public User () {};
+    public User () {}
     public User (String idUser,
                  String name,
                  String pictureProfile,
