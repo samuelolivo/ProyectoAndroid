@@ -11,4 +11,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="btnToLogin">Iniciar Sesion</string>
     <string name="btnToRegister">Registrar</string>
+    <string name="txtLogin">Inicio de Sesion\n\n</string>
+    <string name="correoHInt">Correo: a@something.com</string>
+    <string name="txtPassword">Contraseña</string>
 </resources>
