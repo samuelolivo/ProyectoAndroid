@@ -27,6 +27,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(bng.getRoot());
         fAuth = FirebaseAuth.getInstance();
 
+        if(fAuth.getCurrentUser() != null){
+            Intent intent = new Intent(LoginActivity.this, MainPage.class);
+            startActivity(intent);
+            finish();
+        }
+
         bng.btnFormToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

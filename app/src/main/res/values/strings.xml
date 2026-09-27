@@ -20,4 +20,5 @@
     <string name="hintInputConfirmPassword">Confirmar contraseña</string>
     <string name="btnRegisterMe">Registrarme</string>
     <string name="btnBackToLoginText">Ya tengo cuenta, Iniciar sesión</string>
+    <string name="btnLogout">Cerrar Sesión</string>
 </resources>
