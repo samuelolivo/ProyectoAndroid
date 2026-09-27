@@ -7,11 +7,17 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be &gt; 5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="btnToLogin">Iniciar Sesion</string>
     <string name="btnToRegister">Registrar</string>
     <string name="txtLogin">Inicio de Sesion\n\n</string>
     <string name="correoHInt">Correo: a@something.com</string>
     <string name="txtPassword">Contraseña</string>
+    <string name="txtTitleRegistrar">Crear Cuenta</string>
+    <string name="hintInputNombre">Nombre Completo\n</string>
+    <string name="hintInputCorreo">Correo electrónico\n</string>
+    <string name="hintInputConfirmPassword">Confirmar contraseña</string>
+    <string name="btnRegisterMe">Registrarme</string>
+    <string name="btnBackToLoginText">Ya tengo cuenta, Iniciar sesión</string>
 </resources>

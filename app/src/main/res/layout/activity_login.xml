@@ -7,44 +7,40 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <!-- 1. Título (Inicia la cadena empaquetada) -->
     <TextView
         android:id="@+id/txtLogin"
-        android:layout_width="241dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="86dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="87dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/txtLogin"
         android:textSize="34sp"
+        android:textAlignment="center"
+        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 2. Imagen -->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="143dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="502dp"
+        android:layout_marginTop="24dp"
         android:background="@color/primary"
         android:backgroundTint="@color/primary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/inputCorreo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLogin"
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
+    <!-- 3. Campo Correo -->
     <EditText
         android:id="@+id/inputCorreo"
-        android:layout_width="247dp"
+        android:layout_width="250dp"
         android:layout_height="45dp"
-        android:layout_marginStart="83dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="83dp"
+        android:layout_marginTop="32dp"
         android:background="@color/bgInputs"
         android:backgroundTint="@color/bgInputs"
         android:ems="10"
@@ -54,57 +50,63 @@
         android:textColor="@color/black"
         android:textColorHint="@color/hintColorInputs"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/layoutPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <EditText
-        android:id="@+id/inputPassword"
-        android:layout_width="249dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="83dp"
+    <!-- 4. Campo Contraseña -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutPass"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="83dp"
-        android:background="@color/bgInputs"
-        android:backgroundTint="@color/bgInputs"
-        android:ems="10"
-        android:hint="@string/txtPassword"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:password="false"
-        android:textColorHint="@color/hintColorInputs"
-        android:textSize="14sp"
+        app:hintEnabled="false"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/btnFormLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputCorreo" />
+        app:layout_constraintTop_toBottomOf="@+id/inputCorreo">
 
+        <EditText
+            android:id="@+id/inputPassword"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/bgInputs"
+            android:backgroundTint="@color/bgInputs"
+            android:ems="10"
+            android:hint="@string/txtPassword"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="@color/hintColorInputs"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 5. Botón de Login -->
     <Button
         android:id="@+id/btnFormLogin"
-        android:layout_width="0dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="279dp"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/primary"
         android:text="@string/txtLogin"
         android:textColorLink="@color/primary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnFormToRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutPass" />
 
+    <!-- 6. Botón ir a Registro (Termina la cadena) -->
     <Button
         android:id="@+id/btnFormToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="153dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#00FFFFFF"
         android:text="@string/btnToRegister"
         android:textColor="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFormLogin" />
