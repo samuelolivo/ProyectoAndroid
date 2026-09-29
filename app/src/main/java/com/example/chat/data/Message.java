@@ -1,7 +1,6 @@
 package com.example.chat.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Message {
     private String idMessage;
@@ -9,7 +8,7 @@ public class Message {
     private String idUserSender;
     private String content;
     private MessageType type;
-    private List<String> readBy;
+    private HashMap<String, Boolean> readBy;
     private boolean deleted, edited;
     private long timeStamp;
 
@@ -19,7 +18,7 @@ public class Message {
                     String idUserSender,
                     String content,
                     MessageType type,
-                    List<String> readBy,
+                    HashMap<String, Boolean> readBy,
                     boolean deleted,
                     boolean edited,
                     long timeStamp) {
@@ -28,7 +27,7 @@ public class Message {
         this.idUserSender = idUserSender;
         this.content = content;
         this.type = type;
-        this.readBy = new ArrayList<>(readBy);
+        this.readBy = new HashMap<>(readBy);
         this.deleted = deleted;
         this.edited = edited;
         this.timeStamp = timeStamp;
@@ -54,7 +53,7 @@ public class Message {
         return type;
     }
 
-    public List<String> getReadBy() {
+    public HashMap<String, Boolean> getReadBy() {
         return readBy;
     }
 
@@ -90,7 +89,7 @@ public class Message {
         this.content = content;
     }
 
-    public void setReadBy(List<String> readBy) {
+    public void setReadBy(HashMap<String, Boolean> readBy) {
         this.readBy = readBy;
     }
 

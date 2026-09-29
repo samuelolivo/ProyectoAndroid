@@ -47,7 +47,7 @@ public class User {
         this.name = name;
     }
     public void setCorreo(String correo) {
-        this.name = correo;
+        this.correo = correo;
     }
 
     public void setPictureProfile(String pictureProfile) {

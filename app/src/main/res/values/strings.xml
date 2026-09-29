@@ -23,4 +23,11 @@
     <string name="btnLogout">Cerrar Sesión</string>
     <string name="txtNewChat">Nuevo Chat</string>
     <string name="titleChats">Lista De Conversaciones</string>
+    <string name="titleContactos">Contactos</string>
+    <string name="statusOnline">Online</string>
+    <string name="statusOffline">Offline</string>
+    <string name="txtOnlineStatus">Status</string>
+    <string name="txtUserName">Nombre de usuario</string>
+    <string name="txtEmail">email@domain.com</string>
+    <string name="imgUserProfile" />
 </resources>

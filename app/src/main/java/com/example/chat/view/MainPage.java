@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chat.Adapters.ChatAdapter;
+import com.example.chat.adapters.ChatAdapter;
 import com.example.chat.R;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
@@ -26,6 +26,7 @@ public class MainPage extends AppCompatActivity {
     private List<Chat> listaChats;
     private MainViewModel viewModel;
     private String miUid;
+    private boolean navSincronizando;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +79,14 @@ public class MainPage extends AppCompatActivity {
         });
 
         bng.bottomNav.setOnItemSelectedListener(item -> {
+            if (navSincronizando) return true;
             int id = item.getItemId();
 
             if (id == R.id.nav_chats) {
                 return true;
 
             } else if (id == R.id.nav_contactos) {
-                // Aquí abrirás tu pantalla de contactos en el futuro
-                Toast.makeText(MainPage.this, "Abriendo Contactos...", Toast.LENGTH_SHORT).show();
-                // startActivity(new Intent(MainPage.this, ContactosActivity.class));
+                startActivity(new Intent(MainPage.this, ContactsActivity.class));
                 return true;
 
             } else if (id == R.id.nav_ajustes) {
@@ -134,4 +134,11 @@ public class MainPage extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navSincronizando = true;
+        bng.bottomNav.setSelectedItemId(R.id.nav_chats);
+        navSincronizando = false;
+    }
 }
