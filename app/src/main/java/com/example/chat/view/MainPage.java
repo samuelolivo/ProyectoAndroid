@@ -2,32 +2,31 @@ package com.example.chat.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.chat.Adapters.ChatAdapter;
+import com.example.chat.R;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
+import com.example.chat.viewModel.MainViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainPage extends AppCompatActivity {
-private ActivityMainPageBinding bng;
-     private DatabaseReference userRef;
-     private String uidActualUser;
+
+    private ActivityMainPageBinding bng;
     private ChatAdapter adapter;
     private List<Chat> listaChats;
+    private MainViewModel viewModel;
+    private String miUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,77 +34,104 @@ private ActivityMainPageBinding bng;
         setContentView(bng.getRoot());
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            // Si por algún motivo no hay sesión, lo devolvemos al login
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
         }
-        uidActualUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//manejo de online
-        userRef = FirebaseDatabase.getInstance().getReference("Users").child(uidActualUser);
-        userRef.child("online").setValue(true);
-        userRef.child("online").onDisconnect().setValue(false);
-//recyclerView
-        bng.recyclerViewChats.setLayoutManager(new LinearLayoutManager(this));
+
+        miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseDatabase.getInstance().getReference("Users").child(miUid).child("online").setValue(true);
+        FirebaseDatabase.getInstance().getReference("Users").child(miUid).child("online").onDisconnect().setValue(false);
+
         listaChats = new ArrayList<>();
         adapter = new ChatAdapter(listaChats);
+        bng.recyclerViewChats.setLayoutManager(new LinearLayoutManager(this));
         bng.recyclerViewChats.setAdapter(adapter);
 
-        cargarChatsDesdeFirebase();
-//
-//        bng.btnLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LogOut();
-//            }
-//        });
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        bng.btnNuevoChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(MainPage.this, "Abrir lista de contactos...", Toast.LENGTH_SHORT).show();
-                LogOut();
+        viewModel.getChatsLiveData().observe(this, chats -> {
+            listaChats.clear();
+            if (chats != null) {
+                listaChats.addAll(chats);
+            }
+            adapter.notifyDataSetChanged();
+        });
+
+        viewModel.getResultadoCreacionChat().observe(this, resultado -> {
+            if (resultado != null) {
+                if (resultado.equals("SUCCESS")) {
+                    Toast.makeText(this, "¡Chat creado exitosamente!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
+                }
             }
         });
-    }
 
-    //funcion para cerrar sesion
-    private void LogOut() {
-        userRef.child("online").setValue(false);
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(MainPage.this, LoginActivity.class);
+        viewModel.getLogoutLiveData().observe(this, cerrado -> {
+            if (cerrado != null && cerrado) {
+                Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainPage.this, LoginActivity.class));
+                finish();
+            }
+        });
 
-        startActivity(intent);
+        bng.bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
 
-    }
+            if (id == R.id.nav_chats) {
+                return true;
 
-    private void cargarChatsDesdeFirebase() {
-        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
+            } else if (id == R.id.nav_contactos) {
+                // Aquí abrirás tu pantalla de contactos en el futuro
+                Toast.makeText(MainPage.this, "Abriendo Contactos...", Toast.LENGTH_SHORT).show();
+                // startActivity(new Intent(MainPage.this, ContactosActivity.class));
+                return true;
 
-        // Magia de Firebase: "Búscame solo los chats donde mi ID tenga el valor true"
-        chatsRef.orderByChild("users/" + uidActualUser).equalTo(true)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        listaChats.clear(); // Limpiamos la lista vieja para evitar duplicados en la pantalla
+            } else if (id == R.id.nav_ajustes) {
+                // Aquí abrirás tu pantalla de ajustes en el futuro
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainPage.this);
+                builder.setTitle("Cerrar Sesión");
+                builder.setMessage("¿Estás seguro de que deseas salir de tu cuenta?");
 
-                        // Recorremos todos los chats que Firebase encontró
-                        for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
-                            Chat chat = chatSnapshot.getValue(Chat.class);
-                            if (chat != null) {
-                                listaChats.add(chat);
-                            }
-                        }
-
-                        // Le avisamos al Adaptador que la lista cambió para que repinte la pantalla
-                        adapter.notifyDataSetChanged();
-                    }
-
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(MainPage.this, "Error al cargar chats: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                builder.setPositiveButton("Sí, salir", (dialog, which) -> {
+                    // Le pedimos al ViewModel que haga el trabajo
+                    viewModel.cerrarSesion(miUid);
                 });
+
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+
+                return true;
+            }
+
+            return false;
+        });
+
+        viewModel.cargarMisChats(miUid);
+
+        bng.btnNuevoChat.setOnClickListener(v -> mostrarDialogoBuscarCorreo());
     }
+
+    private void mostrarDialogoBuscarCorreo() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Nuevo Chat");
+        builder.setMessage("Ingresa el correo del usuario:");
+
+        final android.widget.EditText inputCorreo = new android.widget.EditText(this);
+        inputCorreo.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        builder.setView(inputCorreo);
+
+        builder.setPositiveButton("Buscar", (dialog, which) -> {
+            String correoBuscado = inputCorreo.getText().toString().trim().toLowerCase()    ;
+            if (!correoBuscado.isEmpty()) {
+                viewModel.iniciarNuevoChat(correoBuscado, miUid);
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
 }

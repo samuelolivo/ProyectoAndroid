@@ -6,6 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.RecycleChatViewBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
@@ -26,15 +32,46 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chatActual = listaChats.get(position);
 
-        // Colocamos los datos básicos que sí tenemos en la clase Chat
         holder.binding.txtLastMessage.setText(chatActual.getUltimoMensaje());
         holder.binding.txtTime.setText("Hoy"); // Más adelante daremos formato al timestamp
-
-        // Como solo tenemos el ID del usuario, ponemos esto temporalmente
         holder.binding.txtChatName.setText("Cargando contacto...");
 
-        // (En el siguiente paso agregaremos aquí las 3 líneas de código
-        // para que Firebase busque el nombre real usando el ID)
+        String miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String idDelAmigo = "";
+
+        if (chatActual.getUsers() != null) {
+            for (String idUsuario : chatActual.getUsers().keySet()) {
+                if (!idUsuario.equals(miUid)) {
+                    idDelAmigo = idUsuario; // ¡Encontramos el ID del otro!
+                    break;
+                }
+            }
+        }
+
+        if (!idDelAmigo.isEmpty()) {
+            FirebaseDatabase.getInstance().getReference("Users").child(idDelAmigo)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                // OJO: Asegúrate de que en tu base de datos la variable se llame "name"
+                                String nombreReal = snapshot.child("name").getValue(String.class);
+                                String tiempo = snapshot.child("timestamp").getValue(String.class);
+                                if (nombreReal != null) {
+                                    holder.binding.txtChatName.setText(nombreReal);
+                                }
+                                if (tiempo != null) {
+                                    holder.binding.txtTime.setText(tiempo);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            holder.binding.txtChatName.setText("Error al cargar");
+                        }
+                    });
+        }
     }
 
     @Override

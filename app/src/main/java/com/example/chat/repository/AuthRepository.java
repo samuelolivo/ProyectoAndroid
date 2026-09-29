@@ -33,8 +33,8 @@ public class AuthRepository {
                     if (task.isSuccessful()) {
                         String uid = fAuth.getCurrentUser().getUid();
                         // Guardamos al usuario en la base de datos con foto vacía
-                        User newUser = new User(uid, nombre, email, "", true);
-
+                        String correoEnMinusculas = email.trim().toLowerCase();
+                        User newUser = new User(uid, nombre, correoEnMinusculas, "", true);
                         usersRef.child(uid).setValue(newUser)
                                 .addOnCompleteListener(dbTask -> {
                                     if (dbTask.isSuccessful()) {
