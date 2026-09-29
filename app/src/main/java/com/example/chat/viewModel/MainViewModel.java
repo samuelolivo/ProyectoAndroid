@@ -1,0 +1,49 @@
+package com.example.chat.viewModel;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.example.chat.data.Chat;
+import com.example.chat.repository.ChatRepository;
+
+import java.util.List;
+
+public class MainViewModel extends ViewModel {
+
+    private ChatRepository repository;
+    private MutableLiveData<List<Chat>> chatsLiveData;
+    private MutableLiveData<String> resultadoCreacionChat;
+    private MutableLiveData<Boolean> logoutLiveData;
+
+    public MainViewModel() {
+    logoutLiveData = new MutableLiveData<>();
+        repository = new ChatRepository();
+        chatsLiveData = new MutableLiveData<>();
+        resultadoCreacionChat = new MutableLiveData<>();
+    }
+
+    public LiveData<List<Chat>> getChatsLiveData() {
+        return chatsLiveData;
+    }
+
+    public LiveData<String> getResultadoCreacionChat() {
+        return resultadoCreacionChat;
+    }
+
+    public void cargarMisChats(String miUid) {
+        repository.escucharMisChats(miUid, chatsLiveData);
+    }
+
+    public void iniciarNuevoChat(String correoAmigo, String miUid) {
+        repository.crearChatPorCorreo(correoAmigo, miUid, resultadoCreacionChat);
+    }
+
+    public LiveData<Boolean> getLogoutLiveData() {
+        return logoutLiveData;
+    }
+
+    public void cerrarSesion(String miUid) {
+        repository.cerrarSesion(miUid, logoutLiveData);
+    }
+}
