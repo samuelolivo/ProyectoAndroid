@@ -1,4 +1,4 @@
-package com.example.chat;
+package com.example.chat.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,7 +63,8 @@ private ActivityMainPageBinding bng;
         bng.btnNuevoChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainPage.this, "Abrir lista de contactos...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainPage.this, "Abrir lista de contactos...", Toast.LENGTH_SHORT).show();
+                LogOut();
             }
         });
     }

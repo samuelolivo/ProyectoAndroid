@@ -1,27 +1,23 @@
-package com.example.chat;
+package com.example.chat.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.chat.data.User;
+import com.example.chat.R;
 import com.example.chat.databinding.ActivityRegisterBinding;
-import com.google.firebase.Firebase;
+import com.example.chat.viewModel.AuthViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegisterActivity extends AppCompatActivity {
-    private FirebaseAuth fAuth;
+    private AuthViewModel fAuth;
     ActivityRegisterBinding bng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +25,23 @@ public class RegisterActivity extends AppCompatActivity {
        bng = ActivityRegisterBinding.inflate(getLayoutInflater());
        setContentView(bng.getRoot());
 
-       fAuth = FirebaseAuth.getInstance();
+        fAuth = new ViewModelProvider(this).get(AuthViewModel.class);
+
+        // Observamos el resultado de la autenticación
+        fAuth.getAuthResult().observe(this, result -> {
+            if (result != null) {
+                bng.progressBarRegister.setVisibility(View.GONE);
+                bng.btnFormRegister.setEnabled(true);
+                bng.btnFormRegister.setText(R.string.btnToLogin);
+                if (result.equals("SUCCESS")) {
+                    Toast.makeText(this, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, MainPage.class));
+                    finish();
+                } else {
+                    Toast.makeText(this, "Error: " + result, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
        bng.btnBackToLogin.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -103,6 +115,10 @@ public class RegisterActivity extends AppCompatActivity {
             String password = bng.inputPasswordReg.getText().toString().trim();
 
 
+            bng.btnFormRegister.setText("");
+            bng.btnFormRegister.setEnabled(false);
+            bng.progressBarRegister.setVisibility(View.VISIBLE);
+            fAuth.register(nombre, correo, password);
         }
     }
 }

@@ -1,12 +1,7 @@
 package com.example.chat.repository;
 
-import android.content.Intent;
-import android.widget.Toast;
-
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chat.LoginActivity;
-import com.example.chat.MainPage;
 import com.example.chat.data.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

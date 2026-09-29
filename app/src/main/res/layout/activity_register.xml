@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".view.RegisterActivity">
 
     <!-- 1. Título (Inicia la cadena empaquetada) -->
     <TextView
@@ -148,5 +148,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFormRegister" />
+
+    <ProgressBar
+        android:id="@+id/progressBarRegister"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:elevation="5dp"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnFormRegister"
+        app:layout_constraintEnd_toEndOf="@+id/btnFormRegister"
+        app:layout_constraintStart_toStartOf="@+id/btnFormRegister"
+        app:layout_constraintTop_toTopOf="@+id/btnFormRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

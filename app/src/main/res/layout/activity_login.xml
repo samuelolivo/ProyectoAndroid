@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <!-- 1. Título (Inicia la cadena empaquetada) -->
     <TextView
@@ -110,5 +110,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFormLogin" />
+    <ProgressBar
+        android:id="@+id/progressBarLogin"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:elevation="5dp"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnFormLogin"
+        app:layout_constraintEnd_toEndOf="@+id/btnFormLogin"
+        app:layout_constraintStart_toStartOf="@+id/btnFormLogin"
+        app:layout_constraintTop_toTopOf="@+id/btnFormLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

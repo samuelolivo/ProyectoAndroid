@@ -1,41 +1,50 @@
-package com.example.chat;
+package com.example.chat.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.chat.R;
 import com.example.chat.databinding.ActivityLoginBinding;
+import com.example.chat.viewModel.AuthViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class LoginActivity extends AppCompatActivity {
-    FirebaseAuth fAuth;
+    AuthViewModel fAuth;
     ActivityLoginBinding bng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bng = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(bng.getRoot());
-        fAuth = FirebaseAuth.getInstance();
 
-        if(fAuth.getCurrentUser() != null){
-            Intent intent = new Intent(LoginActivity.this, MainPage.class);
-            startActivity(intent);
-            finish();
-        }
+        fAuth = new ViewModelProvider(this).get(AuthViewModel.class);
+
+        fAuth.getAuthResult().observe(this, r -> {
+           if(r != null){
+               bng.progressBarLogin.setVisibility(View.GONE);
+               bng.btnFormLogin.setEnabled(true);
+               bng.btnFormLogin.setText(R.string.btnToLogin);
+
+               if (r.equals("SUCCESS")) {
+                   Toast.makeText(this, "¡Inicio exitoso!", Toast.LENGTH_SHORT).show();
+                   startActivity(new Intent(this, MainPage.class));
+                   finish();
+               } else {
+                   Toast.makeText(this, "Error: " + r, Toast.LENGTH_LONG).show();
+               }
+           }
+        });
 
         bng.btnFormToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 
                 startActivity(intent);
@@ -50,6 +59,14 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+    }
+@Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(this, MainPage.class));
+            finish();
+        }
     }
 
     private void validateForm(){
@@ -68,23 +85,11 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // 4. Le pedimos a Firebase que verifique si el usuario existe
-            fAuth.signInWithEmailAndPassword(correo, password)
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            // ¡Exito! Las credenciales son correctas
-                            Toast.makeText(LoginActivity.this, "¡Inicio de sesión exitoso!", Toast.LENGTH_SHORT).show();
+        bng.btnFormLogin.setText("");
+        bng.btnFormLogin.setEnabled(false);
+        bng.progressBarLogin.setVisibility(View.VISIBLE);
 
-                            // Viajamos a la página principal
-                            Intent intent = new Intent(LoginActivity.this, MainPage.class);
-                            startActivity(intent);
+            fAuth.login(correo, password);
 
-                            // Cerramos esta pantalla para que no puedan volver atrás con el botón del celular
-                            finish();
-                        } else {
-                            // Fracaso: Correo no existe o contraseña incorrecta
-                            Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Revisa tus datos.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-        }
+}
 }
