@@ -3,16 +3,19 @@ package com.example.chat.data;
 public class User {
     private String idUser;
     private String name;
+    private String correo;
     private String pictureProfile;
     private boolean online;
 
     public User () {}
     public User (String idUser,
                  String name,
+                 String correo,
                  String pictureProfile,
                  boolean online) {
         this.idUser = idUser;
         this.name = name;
+        this.correo = correo;
         this.pictureProfile = pictureProfile;
         this.online = online;
     }
@@ -23,6 +26,9 @@ public class User {
 
     public String getName() {
         return name;
+    }
+    public String getCorreo() {
+        return correo;
     }
 
     public String getPictureProfile() {
@@ -39,6 +45,9 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public void setCorreo(String correo) {
+        this.name = correo;
     }
 
     public void setPictureProfile(String pictureProfile) {

@@ -102,27 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
             String correo = bng.inputCorreoReg.getText().toString().trim();
             String password = bng.inputPasswordReg.getText().toString().trim();
 
-            fAuth.createUserWithEmailAndPassword(correo, password).addOnCompleteListener(this, task -> {
-                if(task.isSuccessful()){
-                    String uid = fAuth.getCurrentUser().getUid();
-                    User newUser = new User(uid, nombre, "", true);
 
-                    FirebaseDatabase.getInstance().getReference("Users").child(uid)
-                            .setValue(newUser)
-                            .addOnCompleteListener(dbTask -> {
-                                if(dbTask.isSuccessful()){
-                                    Toast.makeText(RegisterActivity.this, "Cuenta creada exitosamente",Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, MainPage.class);
-                                    startActivity(intent);
-                                    finish();
-                                }else {
-                                    Toast.makeText(RegisterActivity.this, "Error al guardar los datos del usuario", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }else {
-                    Toast.makeText(RegisterActivity.this, "Error de registro: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
         }
     }
 }
