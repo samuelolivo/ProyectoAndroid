@@ -2,6 +2,7 @@ package com.example.chat.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.chat.R;
 import com.example.chat.adapters.ChatAdapter;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +31,7 @@ private ActivityMainPageBinding bng;
      private String uidActualUser;
     private ChatAdapter adapter;
     private List<Chat> listaChats;
+    private boolean navSincronizando;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +71,25 @@ private ActivityMainPageBinding bng;
                 LogOut();
             }
         });
+
+        bng.bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (navSincronizando) return true;
+                if (item.getItemId() == R.id.nav_contactos) {
+                    startActivity(new Intent(MainPage.this, ContactsActivity.class));
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navSincronizando = true;
+        bng.bottomNav.setSelectedItemId(R.id.nav_chats);
+        navSincronizando = false;
     }
 
     //funcion para cerrar sesion
