@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chat.Adapters.ChatAdapter;
+import com.example.chat.adapters.ChatAdapter;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
 import com.google.firebase.auth.FirebaseAuth;
