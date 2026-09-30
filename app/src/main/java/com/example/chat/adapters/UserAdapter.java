@@ -24,7 +24,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public void actualizarLista(List<User> nuevaLista) {
         this.listaUsuarios = nuevaLista;
-        notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 
     @Override

@@ -98,4 +98,24 @@ public class ChatRepository {
             logoutResult.setValue(true);
         });
     }
+
+    // Agrega esto en tu ChatRepository.java
+    public void escucharEstadoConexion(MutableLiveData<Boolean> conexionLiveData) {
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean connected = snapshot.getValue(Boolean.class);
+                if (connected != null) {
+                    conexionLiveData.setValue(connected);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // No hacemos nada aquí
+            }
+        });
+    }
 }

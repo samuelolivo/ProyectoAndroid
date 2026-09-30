@@ -20,6 +20,10 @@ public class UserListViewModel extends ViewModel {
     public LiveData<List<User>> getUserList() {
         return userList;
     }
+    public void changeOnlineStatus(String uid, boolean isOnline){
+        repository.updateOnlineStatus(uid, isOnline);
+
+    }
 
     public void loadAllUsers(String miUid) {
         repository.observeAllUsers(miUid, userList);
