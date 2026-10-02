@@ -31,4 +31,6 @@
     <string name="txtEmail">email@domain.com</string>
     <string name="imgUserProfile" />
     <string name="txtNameRecv">Enviado por...</string>
+    <string name="btnSend">Enviar mensaje</string>
+    <string name="hintmtLnMessage">Escribe un mensaje...</string>
 </resources>
