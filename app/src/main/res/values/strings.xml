@@ -30,4 +30,5 @@
     <string name="txtUserName">Nombre de usuario</string>
     <string name="txtEmail">email@domain.com</string>
     <string name="imgUserProfile" />
+    <string name="txtNameRecv">Enviado por...</string>
 </resources>
