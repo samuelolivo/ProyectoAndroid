@@ -16,11 +16,14 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<String> resultadoCreacionChat;
     private MutableLiveData<Boolean> logoutLiveData;
 
+    private MutableLiveData<Boolean> conexionLiveData;
+
     public MainViewModel() {
     logoutLiveData = new MutableLiveData<>();
         repository = new ChatRepository();
         chatsLiveData = new MutableLiveData<>();
         resultadoCreacionChat = new MutableLiveData<>();
+        conexionLiveData = new MutableLiveData<>();
     }
 
     public LiveData<List<Chat>> getChatsLiveData() {
@@ -43,6 +46,14 @@ public class MainViewModel extends ViewModel {
         return logoutLiveData;
     }
 
+
+    public LiveData<Boolean> getConexionLiveData(){
+        return conexionLiveData;
+    }
+
+    public void verificarConexion() {
+        repository.escucharEstadoConexion(conexionLiveData);
+    }
     public void cerrarSesion(String miUid) {
         repository.cerrarSesion(miUid, logoutLiveData);
     }

@@ -45,5 +45,6 @@ public class UserRepository {
 
     public void updateOnlineStatus(String uid, boolean isOnline) {
         db.getReference("Users").child(uid).child("online").setValue(isOnline);
+        db.getReference("Users").child(uid).child("online").onDisconnect().setValue(false);;
     }
 }

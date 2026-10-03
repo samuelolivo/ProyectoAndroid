@@ -1,5 +1,6 @@
 package com.example.chat.view;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,8 +14,8 @@ import com.example.chat.R;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
 import com.example.chat.viewModel.MainViewModel;
+import com.example.chat.viewModel.UserListViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,10 @@ public class MainPage extends AppCompatActivity {
     private ChatAdapter adapter;
     private List<Chat> listaChats;
     private MainViewModel viewModel;
+    private UserListViewModel UserviewModel;
     private String miUid;
     private boolean navSincronizando;
+    private AlertDialog dialogConexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +45,14 @@ public class MainPage extends AppCompatActivity {
 
         miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        FirebaseDatabase.getInstance().getReference("Users").child(miUid).child("online").setValue(true);
-        FirebaseDatabase.getInstance().getReference("Users").child(miUid).child("online").onDisconnect().setValue(false);
-
         listaChats = new ArrayList<>();
         adapter = new ChatAdapter(listaChats);
         bng.recyclerViewChats.setLayoutManager(new LinearLayoutManager(this));
         bng.recyclerViewChats.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        UserviewModel = new ViewModelProvider(this).get(UserListViewModel.class);
+        UserviewModel.changeOnlineStatus(miUid, true);
 
         viewModel.getChatsLiveData().observe(this, chats -> {
             listaChats.clear();
@@ -78,6 +80,18 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
+        viewModel.getConexionLiveData().observe(this, hayInternet -> {
+            if (!hayInternet) {
+//                UserviewModel.changeOnlineStatus(miUid, false);
+                mostrarDialogoSinInternet();
+            } else {
+                UserviewModel.changeOnlineStatus(miUid, true);
+                ocultarDialogoSinInternet();
+            }
+        });
+
+        viewModel.verificarConexion();
+
         bng.bottomNav.setOnItemSelectedListener(item -> {
             if (navSincronizando) return true;
             int id = item.getItemId();
@@ -90,14 +104,13 @@ public class MainPage extends AppCompatActivity {
                 return true;
 
             } else if (id == R.id.nav_ajustes) {
-                // Aquí abrirás tu pantalla de ajustes en el futuro
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainPage.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainPage.this);
                 builder.setTitle("Cerrar Sesión");
                 builder.setMessage("¿Estás seguro de que deseas salir de tu cuenta?");
 
                 builder.setPositiveButton("Sí, salir", (dialog, which) -> {
-                    // Le pedimos al ViewModel que haga el trabajo
                     viewModel.cerrarSesion(miUid);
+                    UserviewModel.changeOnlineStatus(miUid, false);
                 });
 
                 builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
@@ -115,7 +128,7 @@ public class MainPage extends AppCompatActivity {
     }
 
     private void mostrarDialogoBuscarCorreo() {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Nuevo Chat");
         builder.setMessage("Ingresa el correo del usuario:");
 
@@ -124,7 +137,7 @@ public class MainPage extends AppCompatActivity {
         builder.setView(inputCorreo);
 
         builder.setPositiveButton("Buscar", (dialog, which) -> {
-            String correoBuscado = inputCorreo.getText().toString().trim().toLowerCase()    ;
+            String correoBuscado = inputCorreo.getText().toString().trim().toLowerCase();
             if (!correoBuscado.isEmpty()) {
                 viewModel.iniciarNuevoChat(correoBuscado, miUid);
             }
@@ -140,5 +153,39 @@ public class MainPage extends AppCompatActivity {
         navSincronizando = true;
         bng.bottomNav.setSelectedItemId(R.id.nav_chats);
         navSincronizando = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Cuando la pantalla se destruye, quitamos el estado online
+        if (miUid != null && UserviewModel != null) {
+            UserviewModel.changeOnlineStatus(miUid, false);
+        }
+    }
+
+    // DIÁLOGO BÁSICO SIN COMPLICACIONES
+    private void mostrarDialogoSinInternet() {
+        if (isFinishing() || isDestroyed()) return;
+
+        if (dialogConexion == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Sin conexión");
+            builder.setMessage("Buscando red... La aplicación se reconectará automáticamente.");
+            builder.setCancelable(false); // No deja tocar nada más hasta que vuelva el internet
+
+            dialogConexion = builder.create();
+        }
+
+        if (!dialogConexion.isShowing()) {
+            dialogConexion.show();
+        }
+    }
+
+    private void ocultarDialogoSinInternet() {
+        if (dialogConexion != null && dialogConexion.isShowing()) {
+            dialogConexion.dismiss();
+            Toast.makeText(this, "¡Conectado!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
