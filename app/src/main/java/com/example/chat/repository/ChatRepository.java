@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.chat.data.Chat;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,13 +89,6 @@ public class ChatRepository {
                         resultadoCreacion.setValue("Error de conexión: " + error.getMessage());
                     }
                 });
-    }
-
-    public void cerrarSesion(String miUid, MutableLiveData<Boolean> logoutResult) {
-        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
-            FirebaseAuth.getInstance().signOut();
-            logoutResult.setValue(true);
-        });
     }
 
     // Agrega esto en tu ChatRepository.java

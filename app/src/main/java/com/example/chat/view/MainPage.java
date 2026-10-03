@@ -13,6 +13,7 @@ import com.example.chat.adapters.ChatAdapter;
 import com.example.chat.R;
 import com.example.chat.data.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
+import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.MainViewModel;
 import com.example.chat.viewModel.UserListViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +27,8 @@ public class MainPage extends AppCompatActivity {
     private ChatAdapter adapter;
     private List<Chat> listaChats;
     private MainViewModel viewModel;
-    private UserListViewModel UserviewModel;
+    private AuthViewModel AuthViewModel;
+    private UserListViewModel UserViewModel;
     private String miUid;
     private boolean navSincronizando;
     private AlertDialog dialogConexion;
@@ -51,8 +53,9 @@ public class MainPage extends AppCompatActivity {
         bng.recyclerViewChats.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        UserviewModel = new ViewModelProvider(this).get(UserListViewModel.class);
-        UserviewModel.changeOnlineStatus(miUid, true);
+        AuthViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        UserViewModel = new ViewModelProvider(this).get(UserListViewModel.class);
+        UserViewModel.changeOnlineStatus(miUid, true);
 
         viewModel.getChatsLiveData().observe(this, chats -> {
             listaChats.clear();
@@ -72,7 +75,7 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
-        viewModel.getLogoutLiveData().observe(this, cerrado -> {
+        AuthViewModel.getLogoutLiveData().observe(this, cerrado -> {
             if (cerrado != null && cerrado) {
                 Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainPage.this, LoginActivity.class));
@@ -85,7 +88,7 @@ public class MainPage extends AppCompatActivity {
 //                UserviewModel.changeOnlineStatus(miUid, false);
                 mostrarDialogoSinInternet();
             } else {
-                UserviewModel.changeOnlineStatus(miUid, true);
+                UserViewModel.changeOnlineStatus(miUid, true);
                 ocultarDialogoSinInternet();
             }
         });
@@ -109,8 +112,8 @@ public class MainPage extends AppCompatActivity {
                 builder.setMessage("¿Estás seguro de que deseas salir de tu cuenta?");
 
                 builder.setPositiveButton("Sí, salir", (dialog, which) -> {
-                    viewModel.cerrarSesion(miUid);
-                    UserviewModel.changeOnlineStatus(miUid, false);
+                    AuthViewModel.logout(miUid);
+                    UserViewModel.changeOnlineStatus(miUid, false);
                 });
 
                 builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
@@ -159,8 +162,8 @@ public class MainPage extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         // Cuando la pantalla se destruye, quitamos el estado online
-        if (miUid != null && UserviewModel != null) {
-            UserviewModel.changeOnlineStatus(miUid, false);
+        if (miUid != null && UserViewModel != null) {
+            UserViewModel.changeOnlineStatus(miUid, false);
         }
     }
 
