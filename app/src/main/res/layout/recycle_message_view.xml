@@ -32,11 +32,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-8dp"
         android:layout_marginEnd="-8dp"
+        app:layout_constrainedHeight="false"
+        app:layout_constrainedWidth="false"
         app:layout_constraintEnd_toStartOf="@+id/bgTailSent"
         app:layout_constraintStart_toEndOf="@+id/bgTailRecv"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginLeft="50dp"
-        app:layout_goneMarginRight="50dp">
+        app:layout_goneMarginLeft="70dp"
+        app:layout_goneMarginRight="70dp">
 
         <ImageView
             android:id="@+id/bgContent"
@@ -85,7 +87,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdImage"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -95,11 +97,9 @@
 
                 <ImageView
                     android:id="@+id/imgContent"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="220dp"
-                    android:maxHeight="300dp"
                     tools:srcCompat="@tools:sample/backgrounds/scenic" />
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
