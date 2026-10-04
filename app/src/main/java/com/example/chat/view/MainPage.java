@@ -152,6 +152,14 @@ public class MainPage extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null && intent.getBooleanExtra("abrir_ajustes", false)) {
+            bng.bottomNav.setSelectedItemId(R.id.nav_ajustes);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         navSincronizando = true;
