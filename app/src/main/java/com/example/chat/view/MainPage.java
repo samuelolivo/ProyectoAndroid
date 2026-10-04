@@ -97,6 +97,12 @@ public class MainPage extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_chats) {
+                // Mostrar chats y ocultar ajustes
+                bng.txtTitulo.setVisibility(android.view.View.VISIBLE);
+                bng.recyclerViewChats.setVisibility(android.view.View.VISIBLE);
+                bng.btnNuevoChat.setVisibility(android.view.View.VISIBLE);
+
+                findViewById(R.id.fragment_container).setVisibility(android.view.View.GONE);
                 return true;
 
             } else if (id == R.id.nav_contactos) {
@@ -104,18 +110,16 @@ public class MainPage extends AppCompatActivity {
                 return true;
 
             } else if (id == R.id.nav_ajustes) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainPage.this);
-                builder.setTitle("Cerrar Sesión");
-                builder.setMessage("¿Estás seguro de que deseas salir de tu cuenta?");
+                bng.txtTitulo.setVisibility(android.view.View.GONE);
+                bng.recyclerViewChats.setVisibility(android.view.View.GONE);
+                bng.btnNuevoChat.setVisibility(android.view.View.GONE);
 
-                builder.setPositiveButton("Sí, salir", (dialog, which) -> {
-                    viewModel.cerrarSesion(miUid);
-                    UserviewModel.changeOnlineStatus(miUid, false);
-                });
+                // Mostrar el fragmento de ajustes
+                findViewById(R.id.fragment_container).setVisibility(android.view.View.VISIBLE);
 
-                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-                builder.show();
-
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new SettingsFragment())
+                        .commit();
                 return true;
             }
 
@@ -151,7 +155,11 @@ public class MainPage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         navSincronizando = true;
-        bng.bottomNav.setSelectedItemId(R.id.nav_chats);
+        if (findViewById(R.id.fragment_container).getVisibility() == android.view.View.VISIBLE) {
+            bng.bottomNav.setSelectedItemId(R.id.nav_ajustes);
+        } else {
+            bng.bottomNav.setSelectedItemId(R.id.nav_chats);
+        }
         navSincronizando = false;
     }
 

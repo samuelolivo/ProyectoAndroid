@@ -92,12 +92,7 @@ public class ChatRepository {
                 });
     }
 
-    public void cerrarSesion(String miUid, MutableLiveData<Boolean> logoutResult) {
-        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
-            FirebaseAuth.getInstance().signOut();
-            logoutResult.setValue(true);
-        });
-    }
+
 
     // Agrega esto en tu ChatRepository.java
     public void escucharEstadoConexion(MutableLiveData<Boolean> conexionLiveData) {

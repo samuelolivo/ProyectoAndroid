@@ -27,4 +27,6 @@ public class AuthViewModel extends ViewModel {
     public void register (String nombre, String email, String pass){
         repository.register(nombre, email, pass, authResult);
     }
+
+
 }

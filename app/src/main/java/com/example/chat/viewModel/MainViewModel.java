@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.chat.data.Chat;
+import com.example.chat.repository.AuthRepository;
 import com.example.chat.repository.ChatRepository;
 
 import java.util.List;
@@ -12,15 +13,18 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
 
     private ChatRepository repository;
+    private AuthRepository authRepository;
     private MutableLiveData<List<Chat>> chatsLiveData;
     private MutableLiveData<String> resultadoCreacionChat;
     private MutableLiveData<Boolean> logoutLiveData;
 
     private MutableLiveData<Boolean> conexionLiveData;
+    private MutableLiveData<Boolean> logout;
 
     public MainViewModel() {
     logoutLiveData = new MutableLiveData<>();
         repository = new ChatRepository();
+        authRepository = new AuthRepository();
         chatsLiveData = new MutableLiveData<>();
         resultadoCreacionChat = new MutableLiveData<>();
         conexionLiveData = new MutableLiveData<>();
@@ -46,6 +50,9 @@ public class MainViewModel extends ViewModel {
         return logoutLiveData;
     }
 
+    public void cerrarSesion(String uid) {
+        authRepository.cerrarSesion(uid, logout);
+    }
 
     public LiveData<Boolean> getConexionLiveData(){
         return conexionLiveData;
@@ -53,8 +60,5 @@ public class MainViewModel extends ViewModel {
 
     public void verificarConexion() {
         repository.escucharEstadoConexion(conexionLiveData);
-    }
-    public void cerrarSesion(String miUid) {
-        repository.cerrarSesion(miUid, logoutLiveData);
     }
 }

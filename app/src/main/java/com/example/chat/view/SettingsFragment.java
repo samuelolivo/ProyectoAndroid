@@ -1,66 +1,133 @@
 package com.example.chat.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.chat.R;
+import com.example.chat.databinding.FragmentSettingsBinding;
+import com.example.chat.viewModel.MainViewModel;
+import com.example.chat.viewModel.SettingsViewModel;
+import com.example.chat.viewModel.UserListViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class SettingsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FragmentSettingsBinding bng;
+    private String miUid;
+    private MainViewModel mainViewModel;
+    private UserListViewModel userViewModel;
+    private SettingsViewModel settingsViewModel;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @Override
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
 
-    public SettingsFragment() {
-        // Required empty public constructor
+        bng = FragmentSettingsBinding.inflate(inflater, container, false);
+        return bng.getRoot();
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+      if(FirebaseAuth.getInstance().getCurrentUser() == null){
+          return;
+      }
+      miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+      settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
+        settingsViewModel.cargarMiPerfil(miUid);
+
+        settingsViewModel.getPerfil().observe(getViewLifecycleOwner(), usuario -> {
+            if (usuario != null) {
+                if (usuario.getName() != null) {
+                    bng.etUserName.setText(usuario.getName());
+                }
+            }
+        });
+
+
+        settingsViewModel.getResultadoPassword().observe(getViewLifecycleOwner(), mensaje -> {
+            if (mensaje != null) {
+                if (mensaje.equals("SUCCESS")) {
+                    Toast.makeText(getContext(), "Contraseña actualizada con éxito", Toast.LENGTH_SHORT).show();
+                    bng.etCurrentPassword.setText("");
+                    bng.etNewPassword.setText("");
+                    bng.etConfirmPassword.setText("");
+                } else {
+                    Toast.makeText(getContext(), "Error: " + mensaje, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
+        bng.btnSaveSettings.setOnClickListener(v -> {
+            String nuevoNombre = bng.etUserName.getText().toString().trim();
+            String passActual = bng.etCurrentPassword.getText().toString().trim();
+            String nuevaPass = bng.etNewPassword.getText().toString().trim();
+            String confirmarPass = bng.etConfirmPassword.getText().toString().trim();
+
+            if (!passActual.isEmpty() || !nuevaPass.isEmpty() || !confirmarPass.isEmpty()) {
+
+                if (passActual.isEmpty()) {
+                    Toast.makeText(getContext(), "Debes ingresar tu contraseña actual", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (nuevaPass.isEmpty() || confirmarPass.isEmpty()) {
+                    Toast.makeText(getContext(), "Debes ingresar y repetir la nueva contraseña", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (nuevaPass.equals(confirmarPass)) {
+                    Toast.makeText(getContext(), "Revisando...", Toast.LENGTH_SHORT).show();
+                    settingsViewModel.actualizarContrasena(passActual, nuevaPass);
+                } else {
+                    Toast.makeText(getContext(), "Las contraseñas nuevas no coinciden", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        bng.btnLogout.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setTitle("Cerrar Sesión");
+            builder.setMessage("¿Estás seguro de que deseas salir de tu cuenta?");
+
+            builder.setPositiveButton("Sí, salir", (dialog, which) -> {
+                mainViewModel.cerrarSesion(miUid);
+                userViewModel.changeOnlineStatus(miUid, false);
+
+                startActivity(new android.content.Intent(requireActivity(), LoginActivity.class));
+                requireActivity().finish();
+            });
+
+            builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+            builder.show();
+
+        });
+
+
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+    public void onDestroyView() {
+        super.onDestroyView();
+        bng = null;
     }
 }

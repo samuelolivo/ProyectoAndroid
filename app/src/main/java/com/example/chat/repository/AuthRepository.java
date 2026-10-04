@@ -52,6 +52,12 @@ public class AuthRepository {
                 });
     }
 
+    public void cerrarSesion(String miUid, MutableLiveData<Boolean> logoutResult) {
+        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
+            FirebaseAuth.getInstance().signOut();
+            logoutResult.setValue(true);
+        });
+    }
     public void actualizarContrasena(String passwordActual, String nuevaContrasena, MutableLiveData<String> resultadoPass) {
         FirebaseUser user = fAuth.getCurrentUser();
 
@@ -60,7 +66,6 @@ public class AuthRepository {
 
             user.reauthenticate(credential).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    // 2. Si la clave actual es correcta, guardamos la nueva
                     user.updatePassword(nuevaContrasena).addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
                             resultadoPass.setValue("SUCCESS");
@@ -69,7 +74,6 @@ public class AuthRepository {
                         }
                     });
                 } else {
-                    // La contraseña actual era incorrecta
                     resultadoPass.setValue("La contraseña actual es incorrecta");
                 }
             });

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.chat.data.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -42,7 +43,22 @@ public class UserRepository {
             }
         });
     }
+    public void cargarMiPerfil(String uid, MutableLiveData<User> perfilLiveData) {
+        DatabaseReference userRef = db.getReference("Users").child(uid);
 
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User miUsuario = snapshot.getValue(User.class);
+                perfilLiveData.setValue(miUsuario);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                perfilLiveData.setValue(null);
+            }
+        });
+    }
     public void updateOnlineStatus(String uid, boolean isOnline) {
         db.getReference("Users").child(uid).child("online").setValue(isOnline);
         db.getReference("Users").child(uid).child("online").onDisconnect().setValue(false);;
