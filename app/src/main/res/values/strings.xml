@@ -31,6 +31,9 @@
     <string name="txtEmail">email@domain.com</string>
     <string name="imgUserProfile" />
     <string name="txtNameRecv">Enviado por...</string>
+    <string name="msgEliminado">Este mensaje fue eliminado</string>
+    <string name="msgEditado">editado</string>
     <string name="btnSend">Enviar mensaje</string>
+    <string name="btnCamera">Enviar imagen</string>
     <string name="hintmtLnMessage">Escribe un mensaje...</string>
 </resources>
