@@ -127,6 +127,13 @@ public class MainPage extends AppCompatActivity {
 
         viewModel.cargarMisChats(miUid);
 
+        adapter.setOnChatClickListener((chat, nombreAmigo) -> {
+            Intent intent = new Intent(MainPage.this, ChatActivity.class);
+            intent.putExtra(ChatActivity.EXTRA_CHAT_ID, chat.getIdChat());
+            intent.putExtra(ChatActivity.EXTRA_NOMBRE, nombreAmigo);
+            startActivity(intent);
+        });
+
         bng.btnNuevoChat.setOnClickListener(v -> mostrarDialogoBuscarCorreo());
     }
 
