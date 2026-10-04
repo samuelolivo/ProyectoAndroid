@@ -3,6 +3,8 @@ package com.example.chat.view;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.chat.R;
 import com.example.chat.databinding.FragmentSettingsBinding;
 import com.example.chat.viewModel.MainViewModel;
@@ -27,6 +30,14 @@ public class SettingsFragment extends Fragment {
     private MainViewModel mainViewModel;
     private UserListViewModel userViewModel;
     private SettingsViewModel settingsViewModel;
+
+    private final ActivityResultLauncher<String> openGallery =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                if (uri != null) {
+                    Toast.makeText(getContext(), "Subiendo imagen...", Toast.LENGTH_SHORT).show();
+                    settingsViewModel.subirFotoPerfil(miUid, uri);
+                }
+            });
 
     @Override
     public View onCreateView(
@@ -57,9 +68,26 @@ public class SettingsFragment extends Fragment {
                 if (usuario.getName() != null) {
                     bng.etUserName.setText(usuario.getName());
                 }
+                if (usuario.getPictureProfile() != null && !usuario.getPictureProfile().isEmpty()) {
+                    Glide.with(this).load(usuario.getPictureProfile()).circleCrop().into(bng.imgProfile);
+                }
             }
         });
 
+        settingsViewModel.getResultadoFoto().observe(getViewLifecycleOwner(), url -> {
+            if (url != null && !url.equals("ERROR")) {
+                Toast.makeText(getContext(), "Foto actualizada", Toast.LENGTH_SHORT).show();
+                Glide.with(this).load(url).circleCrop().into(bng.imgProfile);
+            } else if (url != null) {
+                Toast.makeText(getContext(), "Error al subir foto", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        settingsViewModel.getResultadoNombre().observe(getViewLifecycleOwner(), exito -> {
+            if (exito != null && exito) {
+                Toast.makeText(requireContext(), "Nombre actualizado", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         settingsViewModel.getResultadoPassword().observe(getViewLifecycleOwner(), mensaje -> {
             if (mensaje != null) {
@@ -74,6 +102,8 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        bng.imgProfile.setOnClickListener(v -> openGallery.launch("image/*"));
+
 
 
         bng.btnSaveSettings.setOnClickListener(v -> {
@@ -82,6 +112,10 @@ public class SettingsFragment extends Fragment {
             String nuevaPass = bng.etNewPassword.getText().toString().trim();
             String confirmarPass = bng.etConfirmPassword.getText().toString().trim();
 
+
+            if (!nuevoNombre.isEmpty()) {
+                settingsViewModel.actualizarNombre(miUid, nuevoNombre);
+            }
             if (!passActual.isEmpty() || !nuevaPass.isEmpty() || !confirmarPass.isEmpty()) {
 
                 if (passActual.isEmpty()) {
@@ -94,6 +128,9 @@ public class SettingsFragment extends Fragment {
                     return;
                 }
 
+                if(passActual.length() < 8 || nuevaPass.length() < 8 || confirmarPass.length() < 8){
+                    Toast.makeText(getContext(), "La contrasena debe tener 8 o mas caracteres", Toast.LENGTH_SHORT).show();
+                }
                 if (nuevaPass.equals(confirmarPass)) {
                     Toast.makeText(getContext(), "Revisando...", Toast.LENGTH_SHORT).show();
                     settingsViewModel.actualizarContrasena(passActual, nuevaPass);

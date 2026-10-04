@@ -26,6 +26,7 @@ public class MainViewModel extends ViewModel {
         repository = new ChatRepository();
         authRepository = new AuthRepository();
         chatsLiveData = new MutableLiveData<>();
+        logout = new MutableLiveData<>();
         resultadoCreacionChat = new MutableLiveData<>();
         conexionLiveData = new MutableLiveData<>();
     }

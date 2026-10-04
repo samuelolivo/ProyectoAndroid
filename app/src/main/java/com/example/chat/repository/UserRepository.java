@@ -1,5 +1,7 @@
 package com.example.chat.repository;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,14 +11,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
     private final FirebaseDatabase db;
+    private final FirebaseStorage storage;
 
     public UserRepository() {
+        storage = FirebaseStorage.getInstance();
         db = FirebaseDatabase.getInstance();
     }
 
@@ -62,5 +68,29 @@ public class UserRepository {
     public void updateOnlineStatus(String uid, boolean isOnline) {
         db.getReference("Users").child(uid).child("online").setValue(isOnline);
         db.getReference("Users").child(uid).child("online").onDisconnect().setValue(false);;
+    }
+
+
+    public void actualizarNombre(String uid, String nuevoNombre, MutableLiveData<Boolean> resultadoUpdate) {
+        DatabaseReference userRef = db.getReference("Users").child(uid);
+        userRef.child("name").setValue(nuevoNombre).addOnCompleteListener(task -> {
+            resultadoUpdate.setValue(task.isSuccessful());
+        });
+    }
+
+    public void subirFotoPerfil(String uid, Uri imageUri, MutableLiveData<String> resultadoFoto) {
+
+        StorageReference fileRef = storage.getReference().child("profile_images").child(uid + ".jpg");
+
+        fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String imageUrl = uri.toString();
+
+                db.getReference("Users").child(uid).child("foto").setValue(imageUrl);
+                resultadoFoto.setValue(imageUrl);
+            });
+        }).addOnFailureListener(e -> {
+            resultadoFoto.setValue("ERROR");
+        });
     }
 }

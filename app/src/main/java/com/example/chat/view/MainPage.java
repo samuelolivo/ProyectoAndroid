@@ -106,6 +106,11 @@ public class MainPage extends AppCompatActivity {
                 return true;
 
             } else if (id == R.id.nav_contactos) {
+                bng.txtTitulo.setVisibility(android.view.View.VISIBLE);
+                bng.recyclerViewChats.setVisibility(android.view.View.VISIBLE);
+                bng.btnNuevoChat.setVisibility(android.view.View.VISIBLE);
+                findViewById(R.id.fragment_container).setVisibility(android.view.View.GONE);
+
                 startActivity(new Intent(MainPage.this, ContactsActivity.class));
                 return true;
 
