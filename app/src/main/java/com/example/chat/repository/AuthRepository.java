@@ -3,7 +3,10 @@ package com.example.chat.repository;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.chat.data.User;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -55,4 +58,34 @@ public class AuthRepository {
                     }
                 });
     }
+
+    public void cerrarSesion(String miUid, MutableLiveData<Boolean> logoutResult) {
+        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
+            FirebaseAuth.getInstance().signOut();
+            logoutResult.setValue(true);
+        });
+    }
+    public void actualizarContrasena(String passwordActual, String nuevaContrasena, MutableLiveData<String> resultadoPass) {
+        FirebaseUser user = fAuth.getCurrentUser();
+
+        if (user != null && user.getEmail() != null) {
+            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), passwordActual);
+
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    user.updatePassword(nuevaContrasena).addOnCompleteListener(task2 -> {
+                        if (task2.isSuccessful()) {
+                            resultadoPass.setValue("SUCCESS");
+                        } else {
+                            resultadoPass.setValue(task2.getException().getMessage());
+                        }
+                    });
+                } else {
+                    resultadoPass.setValue("La contraseña actual es incorrecta");
+                }
+            });
+        }
+    }
+
+
 }

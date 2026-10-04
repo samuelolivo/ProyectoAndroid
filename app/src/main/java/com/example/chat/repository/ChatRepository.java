@@ -110,6 +110,8 @@ public class ChatRepository {
                 });
     }
 
+
+
     // Agrega esto en tu ChatRepository.java
     public void escucharEstadoConexion(MutableLiveData<Boolean> conexionLiveData) {
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");

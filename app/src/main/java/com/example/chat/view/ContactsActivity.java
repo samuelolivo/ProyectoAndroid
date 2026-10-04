@@ -50,8 +50,16 @@ public class ContactsActivity extends AppCompatActivity {
             if (navSincronizando) return true;
             if (item.getItemId() == R.id.nav_chats) {
                 finish();
+            } else if (item.getItemId() == R.id.nav_ajustes) {
+                // Volvemos a MainPage y le damos la orden de abrir Ajustes
+                Intent intent = new Intent(ContactsActivity.this, MainPage.class);
+                intent.putExtra("abrir_ajustes", true);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+                return true;
             }
-            return true;
+            return false;
         });
     }
 

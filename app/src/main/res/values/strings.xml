@@ -29,6 +29,10 @@
     <string name="txtOnlineStatus">Status</string>
     <string name="txtUserName">Nombre de usuario</string>
     <string name="txtEmail">email@domain.com</string>
+    <string name="txtPassActual">Contraseña Actual</string>
+    <string name="txtPassNew">Nueva Contraseña</string>
+    <string name="txtRepPassNew">Repetir Nueva Contraseña</string>
+    <string name="txtSaveChanges">Guardar Cambios</string>
     <string name="imgUserProfile" />
     <string name="txtNameRecv">Enviado por...</string>
     <string name="msgEliminado">Este mensaje fue eliminado</string>
