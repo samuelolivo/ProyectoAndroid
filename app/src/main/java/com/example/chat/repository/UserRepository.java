@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -92,5 +93,28 @@ public class UserRepository {
         }).addOnFailureListener(e -> {
             resultadoFoto.setValue("ERROR");
         });
+    }
+
+
+    public void guardarTokenFCM(String uid, String token) {
+        db.getReference("Users").child(uid).child("fcmToken").setValue(token);
+    }
+
+    public void actualizarTokenFCM(String uid) {
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                       return;
+                    }
+
+                    if (task.getResult() != null) {
+                        String token = task.getResult();
+
+                        // Intentamos guardarlo en la base de datos
+                        db.getReference("Users").child(uid).child("fcmToken").setValue(token);
+
+                    }
+                });
     }
 }
