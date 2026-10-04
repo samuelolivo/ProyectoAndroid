@@ -42,10 +42,12 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.cardview)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.firestore)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.material)
     implementation(libs.recyclerview)
+    implementation(libs.glide)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
@@ -54,4 +56,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-storage")
 }
