@@ -30,6 +30,13 @@ public class AuthRepository {
                 });
     }
 
+    public void logout(String miUid, MutableLiveData<Boolean> logoutResult) {
+        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
+            FirebaseAuth.getInstance().signOut();
+            logoutResult.setValue(true);
+        });
+    }
+
     public void register(String nombre, String email, String password, MutableLiveData<String> authResult) {
         fAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {

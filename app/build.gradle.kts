@@ -40,10 +40,14 @@ dependencies {
     implementation(libs.activity.ktx)
     implementation(libs.annotation)
     implementation(libs.appcompat)
+    implementation(libs.cardview)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.firestore)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.material)
+    implementation(libs.recyclerview)
+    implementation(libs.glide)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
@@ -55,5 +59,4 @@ dependencies {
     // Dependencias para Imágenes y Notificaciones
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-messaging")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

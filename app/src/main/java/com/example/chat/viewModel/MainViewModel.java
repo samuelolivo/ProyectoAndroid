@@ -16,13 +16,11 @@ public class MainViewModel extends ViewModel {
     private AuthRepository authRepository;
     private MutableLiveData<List<Chat>> chatsLiveData;
     private MutableLiveData<String> resultadoCreacionChat;
-    private MutableLiveData<Boolean> logoutLiveData;
 
     private MutableLiveData<Boolean> conexionLiveData;
     private MutableLiveData<Boolean> logout;
 
     public MainViewModel() {
-    logoutLiveData = new MutableLiveData<>();
         repository = new ChatRepository();
         authRepository = new AuthRepository();
         chatsLiveData = new MutableLiveData<>();
@@ -45,10 +43,6 @@ public class MainViewModel extends ViewModel {
 
     public void iniciarNuevoChat(String correoAmigo, String miUid) {
         repository.crearChatPorCorreo(correoAmigo, miUid, resultadoCreacionChat);
-    }
-
-    public LiveData<Boolean> getLogoutLiveData() {
-        return logoutLiveData;
     }
 
     public void cerrarSesion(String uid) {

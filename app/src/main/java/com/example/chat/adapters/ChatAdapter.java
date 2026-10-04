@@ -16,10 +16,19 @@ import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
+    public interface OnChatClickListener {
+        void onChatClick(Chat chat, String nombreAmigo);
+    }
+
     private List<Chat> listaChats;
+    private OnChatClickListener listener;
 
     public ChatAdapter(List<Chat> listaChats) {
         this.listaChats = listaChats;
+    }
+
+    public void setOnChatClickListener(OnChatClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -59,6 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                                 String tiempo = snapshot.child("timestamp").getValue(String.class);
                                 if (nombreReal != null) {
                                     holder.binding.txtChatName.setText(nombreReal);
+                                    holder.nombreAmigo = nombreReal;
                                 }
                                 if (tiempo != null) {
                                     holder.binding.txtTime.setText(tiempo);
@@ -72,6 +82,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                         }
                     });
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onChatClick(chatActual, holder.nombreAmigo);
+            }
+        });
     }
 
     @Override
@@ -81,6 +97,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         RecycleChatViewBinding binding;
+        String nombreAmigo;
         public ChatViewHolder(RecycleChatViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
