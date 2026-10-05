@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="primary">#2563EB</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FFEB3B</color>
     <color name="bgInputs">#F3F2FF</color>
     <color name="bgInputsError">#FFBFD4</color>
     <color name="hintColorInputs">#F8757575</color>

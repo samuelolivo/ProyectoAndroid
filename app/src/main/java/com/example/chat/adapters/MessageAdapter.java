@@ -1,11 +1,15 @@
 package com.example.chat.adapters;
 
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,32 +55,47 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         int colorBurbuja = ContextCompat.getColor(b.getRoot().getContext(),
                 esMio(mensaje) ? R.color.primary : R.color.hintColorInputs);
 
+        int colorVisto = ContextCompat.getColor(b.getRoot().getContext(),
+                fueVisto(mensaje) ? R.color.green : R.color.yellow);
+
+        ConstraintLayout.LayoutParams paramsLytContent = (ConstraintLayout.LayoutParams) b.lytContent.getLayoutParams();
+        ConstraintLayout.LayoutParams paramsLytInfo = (ConstraintLayout.LayoutParams) b.lytInfo.getLayoutParams();
+
         if (esMio(mensaje)) {
             b.bgTailSent.setVisibility(View.VISIBLE);
             b.bgTailRecv.setVisibility(View.GONE);
-            b.lytNameRecv.setVisibility(View.GONE);
+            b.txtNameRecv.setVisibility(View.GONE);
             b.bgTailSent.setImageTintList(ColorStateList.valueOf(colorBurbuja));
+            paramsLytContent.startToStart = ConstraintLayout.LayoutParams.UNSET;
+            paramsLytContent.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+            paramsLytInfo.startToStart = ConstraintLayout.LayoutParams.UNSET;
+            b.vwSeen.setVisibility(View.VISIBLE);
+            b.vwSeen.setImageTintList(ColorStateList.valueOf(colorVisto));
         } else {
             b.bgTailSent.setVisibility(View.GONE);
             b.bgTailRecv.setVisibility(View.VISIBLE);
-            b.lytNameRecv.setVisibility(View.GONE);
-            b.bgTailSent.setImageTintList(ColorStateList.valueOf(colorBurbuja));
+            b.txtNameRecv.setVisibility(View.GONE);
+            b.bgTailRecv.setImageTintList(ColorStateList.valueOf(colorBurbuja));
+            paramsLytContent.endToEnd = ConstraintLayout.LayoutParams.UNSET;
+            paramsLytContent.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+            paramsLytInfo.endToEnd = ConstraintLayout.LayoutParams.UNSET;
+            b.vwSeen.setVisibility(View.GONE);
         }
         b.bgContent.setImageTintList(ColorStateList.valueOf(colorBurbuja));
 
         if (mensaje.isDeleted()) {
-            b.lytImage.setVisibility(View.GONE);
+            b.crdImage.setVisibility(View.GONE);
             b.txtContent.setText(R.string.msgEliminado);
             Glide.with(b.getRoot()).clear(b.imgContent);
         } else if (mensaje.getType() == null || mensaje.getType() == MessageType.TEXT) {
-            b.lytImage.setVisibility(View.GONE);
+            b.crdImage.setVisibility(View.GONE);
             b.txtContent.setText(mensaje.getContent());
             Glide.with(b.getRoot()).clear(b.imgContent);
         } else {
-            b.lytImage.setVisibility(View.VISIBLE);
+            b.crdImage.setVisibility(View.VISIBLE);
             b.txtContent.setText("");
             Glide.with(b.getRoot())
-                    .load(mensaje.getContent())
+                    .load(Base64.decode(mensaje.getContent(), Base64.NO_WRAP))
                     .placeholder(R.drawable.bg_circle_online)
                     .error(R.drawable.bg_circle_online)
                     .into(b.imgContent);
@@ -87,8 +106,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             hora = hora + " · " + b.getRoot().getContext().getString(R.string.msgEditado);
         }
         b.txtTimeSent.setText(hora);
-
-        b.vwSeen.setVisibility(fueVisto(mensaje) ? View.VISIBLE : View.INVISIBLE);
     }
 
     private boolean esMio(Message mensaje) {
@@ -99,7 +116,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         HashMap<String, Boolean> readBy = mensaje.getReadBy();
         if (readBy == null) return false;
         for (String uid : readBy.keySet()) {
-            if (uid.equals(miUid)) continue;
             if (!Boolean.TRUE.equals(readBy.get(uid))) return false;
         }
         return !readBy.isEmpty();
