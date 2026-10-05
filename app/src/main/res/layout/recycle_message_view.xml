@@ -4,128 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
-
-    <ImageView
-        android:id="@+id/bgTailSent"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:rotation="270"
-        android:rotationX="180"
-        android:rotationY="180"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lytContent"
-        app:srcCompat="@drawable/bg_rectangle_tringle_message" />
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/bgTailRecv"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_marginEnd="-8dp"
         android:rotation="180"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/lytContent"
+        app:layout_constraintTop_toTopOf="@+id/lytContent"
+        app:srcCompat="@drawable/bg_rectangle_tringle_message" />
+
+    <ImageView
+        android:id="@+id/bgTailSent"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="-8dp"
+        android:rotation="270"
+        android:rotationX="180"
+        android:rotationY="180"
+        app:layout_constraintStart_toEndOf="@+id/lytContent"
         app:layout_constraintTop_toTopOf="@+id/lytContent"
         app:srcCompat="@drawable/bg_rectangle_tringle_message" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lytContent"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="-8dp"
-        android:layout_marginEnd="-8dp"
-        app:layout_constrainedHeight="false"
-        app:layout_constrainedWidth="false"
-        app:layout_constraintEnd_toStartOf="@+id/bgTailSent"
-        app:layout_constraintStart_toEndOf="@+id/bgTailRecv"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginLeft="70dp"
-        app:layout_goneMarginRight="70dp">
+        app:layout_constraintWidth_max="300dp">
 
         <ImageView
             android:id="@+id/bgContent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintCircleRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/bg_square_message" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/lytNameRecv"
+        <TextView
+            android:id="@+id/txtNameRecv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:text="@string/txtNameRecv"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txtNameRecv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txtNameRecv"
-                android:textAlignment="viewStart"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/lytImage"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/crdImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            app:cardCornerRadius="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lytNameRecv">
+            app:layout_constraintTop_toBottomOf="@+id/txtNameRecv"
+            app:layout_constraintWidth_min="150dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/crdImage"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/imgContent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/imgContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/lytText"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/txtContent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            android:text="asjdhgsajhgfjhdsfhadgjhgdfasjkhgfasjkhgfjasgfjkhgasdjkfhgadkjhfgashjkfgasjkhgfdkjhsgfjhsagfjhgsakjhfgasjkhgfkjhsagfkjha"
+            android:textAlignment="viewStart"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lytImage">
+            app:layout_constraintTop_toBottomOf="@+id/crdImage" />
 
-            <TextView
-                android:id="@+id/txtContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="asjdhgsajhgfjhdsfhadgjhgdfasjkhgfasjkhgfjasgfjkhgasdjkfhgadkjhfgashjkfgasjkhgfdkjhsgfjhsagfjhgsakjhfgasjkhgfkjhsagfkjha"
-                android:textAlignment="viewStart"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,32 +114,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lytText">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtContent">
 
             <TextView
                 android:id="@+id/txtTimeSent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="4dp"
                 android:text="11:11"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/vwSeen"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
+            <ImageView
                 android:id="@+id/vwSeen"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:background="@drawable/bg_circle_online"
-                android:backgroundTint="#FFFFFF"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bg_circle_online" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
