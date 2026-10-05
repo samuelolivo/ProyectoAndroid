@@ -144,7 +144,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void marcarRecibidosComoLeidos(List<Message> mensajes) {
         for (Message mensaje : mensajes) {
-            if (miUid.equals(mensaje.getIdUserSender())) continue;
             Map<String, Boolean> readBy = mensaje.getReadBy();
             if (readBy != null && Boolean.TRUE.equals(readBy.get(miUid))) continue;
             viewModel.marcarComoLeido(mensaje.getIdMessage());

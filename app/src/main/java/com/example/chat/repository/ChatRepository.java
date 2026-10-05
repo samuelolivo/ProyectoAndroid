@@ -92,7 +92,7 @@ public class ChatRepository {
                                 participantes.put(miUid, true);
                                 participantes.put(idDelAmigo, true);
 
-                                Chat nuevoChat = new Chat(idNuevoChat, participantes, "Chat iniciado", System.currentTimeMillis());
+                                Chat nuevoChat = new Chat(idNuevoChat, "", participantes, "",  "Chat iniciado", System.currentTimeMillis());
 
                                 chatsRef.child(idNuevoChat).setValue(nuevoChat).addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
@@ -156,7 +156,7 @@ public class ChatRepository {
 
             HashMap<String, Boolean> readBy = new HashMap<String, Boolean>();
             for (String uid : chat.getUsers().keySet()) {
-                readBy.put(uid, false);
+                readBy.put(uid, uid.equals(userId));
             }
 
             long timestamp = System.currentTimeMillis();
@@ -164,6 +164,7 @@ public class ChatRepository {
 
             Map<String, Object> cambios = new HashMap<String, Object>();
             cambios.put("messages/" + messageId, message);
+            cambios.put("lastMessageId", messageId);
             cambios.put("ultimoMensaje", content);
             cambios.put("timestamp", timestamp);
 
@@ -219,7 +220,7 @@ public class ChatRepository {
         });
     };
 
-    public void listenChatMessages(String chatId, MutableLiveData<List<Message>> mensajesLiveData){
+    public void listenChatMessages(String chatId, String userId, MutableLiveData<List<Message>> mensajesLiveData){
         stopListeningChatMessages();
 
         queryMensajesChat = getMessagesRef(chatId).orderByChild("timeStamp");

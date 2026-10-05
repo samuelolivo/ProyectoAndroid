@@ -36,7 +36,7 @@ public class ChatViewModel extends ViewModel implements Callback<Boolean> {
     public void cargarChat(String chatId, String miUid) {
         this.chatId = chatId;
         this.miUid = miUid;
-        repository.listenChatMessages(chatId, mensajes);
+        repository.listenChatMessages(chatId, miUid, mensajes);
     }
 
     public void enviarMensaje(String contenido) {

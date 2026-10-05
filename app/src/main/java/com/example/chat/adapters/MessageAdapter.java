@@ -69,6 +69,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             paramsLytContent.startToStart = ConstraintLayout.LayoutParams.UNSET;
             paramsLytContent.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
             paramsLytInfo.startToStart = ConstraintLayout.LayoutParams.UNSET;
+            b.vwSeen.setVisibility(View.VISIBLE);
+            b.vwSeen.setImageTintList(ColorStateList.valueOf(colorVisto));
         } else {
             b.bgTailSent.setVisibility(View.GONE);
             b.bgTailRecv.setVisibility(View.VISIBLE);
@@ -77,6 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             paramsLytContent.endToEnd = ConstraintLayout.LayoutParams.UNSET;
             paramsLytContent.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
             paramsLytInfo.endToEnd = ConstraintLayout.LayoutParams.UNSET;
+            b.vwSeen.setVisibility(View.GONE);
         }
         b.bgContent.setImageTintList(ColorStateList.valueOf(colorBurbuja));
 
@@ -103,8 +106,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             hora = hora + " · " + b.getRoot().getContext().getString(R.string.msgEditado);
         }
         b.txtTimeSent.setText(hora);
-
-        b.vwSeen.setImageTintList(ColorStateList.valueOf(colorVisto));
     }
 
     private boolean esMio(Message mensaje) {
@@ -115,7 +116,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         HashMap<String, Boolean> readBy = mensaje.getReadBy();
         if (readBy == null) return false;
         for (String uid : readBy.keySet()) {
-            if (uid.equals(miUid)) continue;
             if (!Boolean.TRUE.equals(readBy.get(uid))) return false;
         }
         return !readBy.isEmpty();
