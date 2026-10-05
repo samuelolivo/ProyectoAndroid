@@ -23,8 +23,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
 
-        // TRAMPA: Esto imprimirá un texto azul en Logcat si el mensaje entra al celular
-        android.util.Log.d("FCM_LLEGADA", "¡EL MENSAJE ENTRÓ AL CELULAR!");
 
         if (message.getNotification() != null) {
             String titulo = message.getNotification().getTitle();

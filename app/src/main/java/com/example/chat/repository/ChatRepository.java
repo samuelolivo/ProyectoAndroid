@@ -18,6 +18,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +63,10 @@ public class ChatRepository {
                                 listaTemporal.add(chat);
                             }
                         }
+
+                        Collections.sort(listaTemporal, (chat1, chat2) ->
+                                Long.compare(chat2.getTimestamp(), chat1.getTimestamp())
+                        );
                         chatsLiveData.setValue(listaTemporal);
                     }
 
@@ -68,7 +78,6 @@ public class ChatRepository {
 
     public void crearChatPorCorreo(String correoAmigo, String miUid, MutableLiveData<String> resultadoCreacion) {
 
-        Log.d("correo amigo", correoAmigo);
         usersRef.orderByChild("correo").equalTo(correoAmigo)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -110,9 +119,6 @@ public class ChatRepository {
                 });
     }
 
-
-
-    // Agrega esto en tu ChatRepository.java
     public void escucharEstadoConexion(MutableLiveData<Boolean> conexionLiveData) {
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
 
@@ -201,8 +207,48 @@ public class ChatRepository {
 
             chatRef.updateChildren(cambios)
                     .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
+                        if(task.isSuccessful()) {
                             callback.onSuccess(true);
+
+                            usersRef.child(userId).get().addOnSuccessListener(senderSnapshot -> {
+                                String nombreEmisor = "Alguien";
+                                String fotoEmisor;
+
+                                if (senderSnapshot.exists()) {
+                                    if (senderSnapshot.child("name").exists()) {
+                                        nombreEmisor = senderSnapshot.child("name").getValue(String.class);
+                                    }
+                                    if (senderSnapshot.child("pictureProfile").exists()) {
+                                        fotoEmisor = senderSnapshot.child("pictureProfile").getValue(String.class);
+                                    } else {
+                                        fotoEmisor = "";
+                                    }
+                                } else {
+                                    fotoEmisor = "";
+                                }
+
+                                String tituloNotificacion = nombreEmisor;
+                                if (chat.getUsers().size() > 2) {
+                                    tituloNotificacion = "Grupo: " + nombreEmisor;
+                                }
+
+                                String textoAlerta = (type == MessageType.IMAGE) ? "📷 Imagen" : content;
+
+                                for (String receptorUid : chat.getUsers().keySet()) {
+                                     if (!receptorUid.equals(userId)) {
+
+                                    String finalTituloNotificacion = tituloNotificacion;
+                                    usersRef.child(receptorUid).child("fcmToken").get()
+                                            .addOnSuccessListener(dataSnapshot -> {
+                                                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                                                    String tokenDestino = dataSnapshot.getValue(String.class);
+
+                                                    dispararNotificacionHono(tokenDestino, finalTituloNotificacion, textoAlerta, fotoEmisor);
+                                                }
+                                            });
+                                     }
+                                }
+                            });
                         }
                         else {
                             callback.onError(new Exception("REPO: error al guardar el mensaje" + messageId));
@@ -288,4 +334,44 @@ public class ChatRepository {
         queryMensajesChat = null;
         listenerMensajesChat = null;
     };
+
+    private void dispararNotificacionHono(String tokenDestino, String titulo, String mensaje, String fotoUrl) {
+        new Thread(() -> {
+            try {
+
+                String urlServidor = "http://10.0.0.141:3000/notificar";
+                URL url = new java.net.URL(urlServidor);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+
+                JSONObject json = new JSONObject();
+                json.put("token", tokenDestino);
+                json.put("titulo", titulo);
+                json.put("mensaje", mensaje);
+                json.put("fotoUrl", fotoUrl != null ? fotoUrl : "");
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = json.toString().getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                int codigoRespuesta = conn.getResponseCode();
+                if (codigoRespuesta == 200 || codigoRespuesta == 201) {
+                    android.util.Log.d("API_HONO", "¡Éxito! Hono envió la notificación. Código: " + codigoRespuesta);
+                } else {
+                    android.util.Log.e("API_HONO", "Hono respondió con error: " + codigoRespuesta);
+                }
+
+                conn.disconnect();
+
+            } catch (Exception e) {
+                android.util.Log.e("API_HONO", "Error conectando al servidor nativo: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }).start();
+    }
 }
