@@ -12,7 +12,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
@@ -42,7 +45,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         Chat chatActual = listaChats.get(position);
 
         holder.binding.txtLastMessage.setText(chatActual.getUltimoMensaje());
-        holder.binding.txtTime.setText("Hoy"); // Más adelante daremos formato al timestamp
+        String horaFormateada = formatearHora(chatActual.getTimestamp());
+        holder.binding.txtTime.setText(horaFormateada);
         holder.binding.txtChatName.setText("Cargando contacto...");
 
         String miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -95,6 +99,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         return listaChats.size();
     }
 
+    private String formatearHora(long timestamp) {
+        java.util.Calendar calMensaje = Calendar.getInstance();
+        calMensaje.setTimeInMillis(timestamp);
+
+        Calendar calHoy = Calendar.getInstance();
+
+        if (calMensaje.get(Calendar.YEAR) == calHoy.get(Calendar.YEAR) &&
+                calMensaje.get(Calendar.DAY_OF_YEAR) == calHoy.get(Calendar.DAY_OF_YEAR)) {
+
+            java.text.SimpleDateFormat formatoHora = new java.text.SimpleDateFormat("hh:mm a", Locale.getDefault());
+            return formatoHora.format(new Date(timestamp));
+        }
+        calHoy.add(Calendar.DAY_OF_YEAR, -1);
+        if (calMensaje.get(Calendar.YEAR) == calHoy.get(Calendar.YEAR) &&
+                calMensaje.get(Calendar.DAY_OF_YEAR) == calHoy.get(Calendar.DAY_OF_YEAR)) {
+            return "Ayer";
+        }
+        java.text.SimpleDateFormat formatoFecha = new java.text.SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+        return formatoFecha.format(new java.util.Date(timestamp));
+    }
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         RecycleChatViewBinding binding;
         String nombreAmigo;

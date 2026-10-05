@@ -25,6 +25,10 @@ public class UserListViewModel extends ViewModel {
 
     }
 
+    public void registrarTokenNotificaciones(String uid) {
+        repository.actualizarTokenFCM(uid);
+    }
+
     public void loadAllUsers(String miUid) {
         repository.observeAllUsers(miUid, userList);
     }

@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel;
 import com.example.chat.data.Chat;
 import com.example.chat.repository.AuthRepository;
 import com.example.chat.repository.ChatRepository;
+import com.example.chat.repository.UserRepository;
 
 import java.util.List;
 
 public class MainViewModel extends ViewModel {
 
     private ChatRepository repository;
+    private UserRepository userRepository;
     private AuthRepository authRepository;
     private MutableLiveData<List<Chat>> chatsLiveData;
     private MutableLiveData<String> resultadoCreacionChat;
@@ -22,6 +24,7 @@ public class MainViewModel extends ViewModel {
 
     public MainViewModel() {
         repository = new ChatRepository();
+        userRepository = new UserRepository();
         authRepository = new AuthRepository();
         chatsLiveData = new MutableLiveData<>();
         logout = new MutableLiveData<>();

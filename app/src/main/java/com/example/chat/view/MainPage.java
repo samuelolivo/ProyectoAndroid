@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -47,6 +49,7 @@ public class MainPage extends AppCompatActivity {
 
         miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+
         listaChats = new ArrayList<>();
         adapter = new ChatAdapter(listaChats);
         bng.recyclerViewChats.setLayoutManager(new LinearLayoutManager(this));
@@ -56,6 +59,17 @@ public class MainPage extends AppCompatActivity {
         AuthViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         UserViewModel = new ViewModelProvider(this).get(UserListViewModel.class);
         UserViewModel.changeOnlineStatus(miUid, true);
+
+
+        //NOTIFICACIONES
+        // Pedir permiso de notificaciones para Android 13 o superior
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+        UserViewModel.registrarTokenNotificaciones(miUid);
+//        viewModel.registrarTokenNotificaciones(miUid);
 
         viewModel.getChatsLiveData().observe(this, chats -> {
             listaChats.clear();
