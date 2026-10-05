@@ -15,8 +15,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONObject;
 
@@ -34,7 +32,6 @@ public class ChatRepository {
 
     private DatabaseReference chatsRef;
     private DatabaseReference usersRef;
-    private StorageReference storageRef;
 
     private Query queryMensajesChat;
     private ValueEventListener listenerMensajesChat;
@@ -42,7 +39,6 @@ public class ChatRepository {
     public ChatRepository() {
         chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
-        storageRef = FirebaseStorage.getInstance().getReference();
     }
 
     private DatabaseReference getMessagesRef(String chatId) {
@@ -137,40 +133,6 @@ public class ChatRepository {
             }
         });
     }
-    public void subirImagen(String chatId, byte[] datos, Callback<String> callback){
-        String ruta = "chat_images/" + chatId + "/" + chatsRef.push().getKey() + ".jpg";
-        StorageReference referenciaImagen = storageRef.child(ruta);
-
-        referenciaImagen.putBytes(datos)
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        callback.onError(new Exception("REPO: error al subir la imagen"));
-                        return;
-                    }
-                    referenciaImagen.getDownloadUrl().addOnCompleteListener(urlTask -> {
-                        if (urlTask.isSuccessful()) {
-                            callback.onSuccess(urlTask.getResult().toString());
-                        } else {
-                            callback.onError(new Exception("REPO: no se pudo obtener la URL de la imagen"));
-                        }
-                    });
-                });
-    };
-
-    public void enviarImagen(String chatId, String userId, byte[] datos, Callback<Boolean> callback){
-        subirImagen(chatId, datos, new Callback<String>() {
-            @Override
-            public void onSuccess(String urlImagen) {
-                sendMessage(chatId, userId, urlImagen, MessageType.IMAGE, callback);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                callback.onError(e);
-            }
-        });
-    };
-
     public void sendMessage(String chatId, String userId, String content, MessageType type, Callback<Boolean> callback){
         DatabaseReference chatRef = chatsRef.child(chatId);
 

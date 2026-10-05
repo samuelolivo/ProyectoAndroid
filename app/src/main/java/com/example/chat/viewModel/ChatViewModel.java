@@ -43,8 +43,8 @@ public class ChatViewModel extends ViewModel implements Callback<Boolean> {
         repository.sendMessage(chatId, miUid, contenido, MessageType.TEXT, this);
     }
 
-    public void enviarImagen(byte[] datos) {
-        repository.enviarImagen(chatId, miUid, datos, this);
+    public void enviarImagen(String base64) {
+        repository.sendMessage(chatId, miUid, base64, MessageType.IMAGE, this);
     }
 
     public void editarMensaje(String messageId, String contenido) {

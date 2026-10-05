@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.result.PickVisualMediaRequest;
@@ -31,8 +32,8 @@ public class ChatActivity extends AppCompatActivity {
     public static final String EXTRA_CHAT_ID = "extra_chat_id";
     public static final String EXTRA_NOMBRE = "extra_nombre";
 
-    private static final int MAX_LADO = 1280;
-    private static final int CALIDAD_JPEG = 80;
+    private static final int MAX_LADO = 800;
+    private static final int CALIDAD_JPEG = 65;
 
     private ActivityChatBinding binding;
     private ChatViewModel viewModel;
@@ -105,7 +106,7 @@ public class ChatActivity extends AppCompatActivity {
     private void procesarImagen(Uri uri) {
         try {
             byte[] datos = comprimirImagen(uri);
-            viewModel.enviarImagen(datos);
+            viewModel.enviarImagen(Base64.encodeToString(datos, Base64.NO_WRAP));
         } catch (IOException e) {
             Toast.makeText(this, "No se pudo leer la imagen", Toast.LENGTH_SHORT).show();
         }
