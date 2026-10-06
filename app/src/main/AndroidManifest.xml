@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Chat"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -23,24 +23,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.RegisterActivity"
+            android:name=".ui.register.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.MainPage"
+            android:name=".ui.main.MainPage"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.ContactsActivity"
+            android:name=".ui.contacts.ContactsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.ChatActivity"
+            android:name=".ui.chat.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <service
-            android:name=".util.MyFirebaseMessagingService"
+            android:name=".services.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

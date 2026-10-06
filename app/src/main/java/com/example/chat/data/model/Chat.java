@@ -1,18 +1,22 @@
-package com.example.chat.data;
+package com.example.chat.data.model;
 
 import java.util.HashMap;
 
 public class Chat {
     private String idChat;
+    private String chatName;
     private HashMap<String, Boolean> users;
+    private String lastMessageId;
     private String ultimoMensaje;
     private long timestamp;
 
     public Chat () {}
 
-    public Chat(String idChat, HashMap<String, Boolean> users, String ultimoMensaje, long timestamp){
+    public Chat(String idChat, String chatName, HashMap<String, Boolean> users, String lastMessageId, String ultimoMensaje, long timestamp){
         this.idChat = idChat;
+        this.chatName = chatName;
         this.users = new HashMap<>(users);
+        this.lastMessageId = lastMessageId;
         this.ultimoMensaje = ultimoMensaje;
         this.timestamp = timestamp;
     }
@@ -23,6 +27,14 @@ public class Chat {
 
     public void setIdChat(String idChat) {
         this.idChat = idChat;
+    }
+
+    public String getChatName() {
+        return chatName;
+    }
+
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
     }
 
     public HashMap<String, Boolean> getUsers() {

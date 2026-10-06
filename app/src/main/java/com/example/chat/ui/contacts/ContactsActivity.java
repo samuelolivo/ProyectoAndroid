@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.chat.R;
-import com.example.chat.adapters.UserAdapter;
 import com.example.chat.databinding.ActivityContactsBinding;
+import com.example.chat.ui.login.LoginActivity;
+import com.example.chat.ui.main.MainPage;
 import com.example.chat.viewModel.UserListViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 

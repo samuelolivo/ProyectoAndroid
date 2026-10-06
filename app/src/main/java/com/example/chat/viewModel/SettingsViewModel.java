@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.chat.data.User;
-import com.example.chat.repository.AuthRepository;
-import com.example.chat.repository.UserRepository;
+import com.example.chat.data.model.User;
+import com.example.chat.data.repository.AuthRepository;
+import com.example.chat.data.repository.UserRepository;
 
 public class SettingsViewModel extends ViewModel {
 

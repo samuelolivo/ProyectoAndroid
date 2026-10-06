@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui.main;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -11,10 +11,13 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chat.adapters.ChatAdapter;
 import com.example.chat.R;
-import com.example.chat.data.Chat;
+import com.example.chat.data.model.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
+import com.example.chat.ui.chat.ChatActivity;
+import com.example.chat.ui.contacts.ContactsActivity;
+import com.example.chat.ui.settings.SettingsFragment;
+import com.example.chat.ui.login.LoginActivity;
 import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.MainViewModel;
 import com.example.chat.viewModel.UserListViewModel;

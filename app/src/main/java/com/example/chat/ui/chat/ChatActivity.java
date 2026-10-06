@@ -1,9 +1,10 @@
-package com.example.chat.view;
+package com.example.chat.ui.chat;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.result.PickVisualMediaRequest;
@@ -13,8 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chat.adapters.MessageAdapter;
-import com.example.chat.data.Message;
+import com.example.chat.data.model.Message;
 import com.example.chat.databinding.ActivityChatBinding;
 import com.example.chat.viewModel.ChatViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +31,8 @@ public class ChatActivity extends AppCompatActivity {
     public static final String EXTRA_CHAT_ID = "extra_chat_id";
     public static final String EXTRA_NOMBRE = "extra_nombre";
 
-    private static final int MAX_LADO = 1280;
-    private static final int CALIDAD_JPEG = 80;
+    private static final int MAX_LADO = 800;
+    private static final int CALIDAD_JPEG = 65;
 
     private ActivityChatBinding binding;
     private ChatViewModel viewModel;
@@ -105,7 +105,7 @@ public class ChatActivity extends AppCompatActivity {
     private void procesarImagen(Uri uri) {
         try {
             byte[] datos = comprimirImagen(uri);
-            viewModel.enviarImagen(datos);
+            viewModel.enviarImagen(Base64.encodeToString(datos, Base64.NO_WRAP));
         } catch (IOException e) {
             Toast.makeText(this, "No se pudo leer la imagen", Toast.LENGTH_SHORT).show();
         }
@@ -143,7 +143,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void marcarRecibidosComoLeidos(List<Message> mensajes) {
         for (Message mensaje : mensajes) {
-            if (miUid.equals(mensaje.getIdUserSender())) continue;
             Map<String, Boolean> readBy = mensaje.getReadBy();
             if (readBy != null && Boolean.TRUE.equals(readBy.get(miUid))) continue;
             viewModel.marcarComoLeido(mensaje.getIdMessage());
