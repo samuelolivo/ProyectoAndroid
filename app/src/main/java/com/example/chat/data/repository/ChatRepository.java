@@ -35,6 +35,8 @@ public class ChatRepository {
     private Query queryMensajesChat;
     private ValueEventListener listenerMensajesChat;
 
+
+
     public ChatRepository() {
         chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
