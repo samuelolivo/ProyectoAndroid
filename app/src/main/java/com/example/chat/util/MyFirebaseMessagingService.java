@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.chat.R;
-import com.example.chat.repository.UserRepository;
+import com.example.chat.data.repository.UserRepository;
 import com.example.chat.view.MainPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;

@@ -1,4 +1,4 @@
-package com.example.chat.repository;
+package com.example.chat.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 

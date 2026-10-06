@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.chat.data.Message;
 import com.example.chat.data.MessageType;
-import com.example.chat.repository.ChatRepository;
+import com.example.chat.data.repository.ChatRepository;
 import com.example.chat.util.Callback;
 
 import java.util.ArrayList;
