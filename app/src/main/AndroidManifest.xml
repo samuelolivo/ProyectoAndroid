@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Chat"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -23,19 +23,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.RegisterActivity"
+            android:name=".ui.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.MainPage"
+            android:name=".ui.MainPage"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.ContactsActivity"
+            android:name=".ui.ContactsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.ChatActivity"
+            android:name=".ui.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

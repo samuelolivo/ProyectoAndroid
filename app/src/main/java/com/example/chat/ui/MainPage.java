@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;

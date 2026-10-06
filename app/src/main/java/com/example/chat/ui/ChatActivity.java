@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

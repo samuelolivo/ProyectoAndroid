@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.chat.R;
 import com.example.chat.databinding.ActivityRegisterBinding;
 import com.example.chat.viewModel.AuthViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

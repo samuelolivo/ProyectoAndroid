@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
