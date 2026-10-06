@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.chat.repository.AuthRepository;
+import com.example.chat.data.repository.AuthRepository;
 
 public class AuthViewModel extends ViewModel {
 

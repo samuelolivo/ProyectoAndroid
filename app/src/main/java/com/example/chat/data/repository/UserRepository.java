@@ -1,11 +1,11 @@
-package com.example.chat.repository;
+package com.example.chat.data.repository;
 
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chat.data.User;
+import com.example.chat.data.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

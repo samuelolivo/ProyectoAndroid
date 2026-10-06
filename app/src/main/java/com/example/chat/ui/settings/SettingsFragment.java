@@ -1,4 +1,4 @@
-package com.example.chat.view;
+package com.example.chat.ui.settings;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.chat.R;
 import com.example.chat.databinding.FragmentSettingsBinding;
+import com.example.chat.ui.login.LoginActivity;
 import com.example.chat.viewModel.MainViewModel;
 import com.example.chat.viewModel.SettingsViewModel;
 import com.example.chat.viewModel.UserListViewModel;

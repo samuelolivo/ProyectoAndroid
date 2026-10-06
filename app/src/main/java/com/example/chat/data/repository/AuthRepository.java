@@ -1,8 +1,8 @@
-package com.example.chat.repository;
+package com.example.chat.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chat.data.User;
+import com.example.chat.data.model.User;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;

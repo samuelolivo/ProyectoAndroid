@@ -1,13 +1,13 @@
-package com.example.chat.repository;
+package com.example.chat.data.repository;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chat.data.Chat;
-import com.example.chat.data.Message;
-import com.example.chat.data.MessageType;
+import com.example.chat.data.model.Chat;
+import com.example.chat.data.model.Message;
+import com.example.chat.data.model.MessageType;
 import com.example.chat.util.Callback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;

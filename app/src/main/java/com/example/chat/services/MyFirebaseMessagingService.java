@@ -1,4 +1,4 @@
-package com.example.chat.util;
+package com.example.chat.services;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.chat.R;
-import com.example.chat.repository.UserRepository;
-import com.example.chat.view.MainPage;
+import com.example.chat.data.repository.UserRepository;
+import com.example.chat.ui.main.MainPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
