@@ -1,4 +1,4 @@
-package com.example.chat.ui;
+package com.example.chat.ui.register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.chat.R;
 import com.example.chat.databinding.ActivityRegisterBinding;
+import com.example.chat.ui.main.MainPage;
+import com.example.chat.ui.login.LoginActivity;
 import com.example.chat.viewModel.AuthViewModel;
 
 import java.util.concurrent.atomic.AtomicBoolean;

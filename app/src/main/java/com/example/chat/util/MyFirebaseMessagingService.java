@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.chat.R;
 import com.example.chat.data.repository.UserRepository;
-import com.example.chat.ui.MainPage;
+import com.example.chat.ui.main.MainPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

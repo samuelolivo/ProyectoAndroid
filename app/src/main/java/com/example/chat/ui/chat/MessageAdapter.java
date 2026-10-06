@@ -1,4 +1,4 @@
-package com.example.chat.adapters;
+package com.example.chat.ui.chat;
 
 import android.content.res.ColorStateList;
 import android.util.Base64;

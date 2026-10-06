@@ -1,4 +1,4 @@
-package com.example.chat.ui;
+package com.example.chat.ui.chat;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chat.adapters.MessageAdapter;
 import com.example.chat.data.model.Message;
 import com.example.chat.databinding.ActivityChatBinding;
 import com.example.chat.viewModel.ChatViewModel;
