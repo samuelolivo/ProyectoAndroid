@@ -35,6 +35,8 @@ public class ChatRepository {
     private Query queryMensajesChat;
     private ValueEventListener listenerMensajesChat;
 
+
+
     public ChatRepository() {
         chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -301,7 +303,7 @@ public class ChatRepository {
         new Thread(() -> {
             try {
 
-                String urlServidor = "http://10.0.0.141:3000/notificar";
+                String urlServidor = "https://api-notificaciones-android.vercel.app/notificar";
                 URL url = new java.net.URL(urlServidor);
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
