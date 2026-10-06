@@ -1,4 +1,4 @@
-package com.example.chat.util;
+package com.example.chat.services;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
