@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.chat.adapters.ChatAdapter;
 import com.example.chat.R;
-import com.example.chat.data.Chat;
+import com.example.chat.data.model.Chat;
 import com.example.chat.databinding.ActivityMainPageBinding;
 import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.MainViewModel;

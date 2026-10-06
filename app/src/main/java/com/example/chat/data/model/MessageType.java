@@ -1,4 +1,4 @@
-package com.example.chat.data;
+package com.example.chat.data.model;
 public enum MessageType {
     TEXT("Text"),
     AUDIO("Audio"),

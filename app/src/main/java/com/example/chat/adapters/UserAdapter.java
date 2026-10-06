@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chat.R;
-import com.example.chat.data.User;
+import com.example.chat.data.model.User;
 import com.example.chat.databinding.RecycleUserViewBinding;
 
 import java.util.List;

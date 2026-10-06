@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.chat.data.User;
+import com.example.chat.data.model.User;
 import com.example.chat.data.repository.UserRepository;
 
 import java.util.List;

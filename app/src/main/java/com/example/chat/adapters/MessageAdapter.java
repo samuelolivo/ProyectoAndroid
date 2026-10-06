@@ -1,12 +1,10 @@
 package com.example.chat.adapters;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chat.R;
-import com.example.chat.data.Message;
-import com.example.chat.data.MessageType;
+import com.example.chat.data.model.Message;
+import com.example.chat.data.model.MessageType;
 import com.example.chat.databinding.RecycleMessageViewBinding;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
