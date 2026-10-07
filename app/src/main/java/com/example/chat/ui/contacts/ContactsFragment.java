@@ -12,8 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.chat.databinding.FragmentContactsBinding;
+import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.UserListViewModel;
-import com.google.firebase.auth.FirebaseAuth;
+
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class ContactsFragment extends Fragment {
 
     private FragmentContactsBinding binding;
     private UserListViewModel viewModel;
+    private AuthViewModel authViewModel;
     private ContactsAdapter adapter;
     private String miUid;
 
@@ -34,11 +36,10 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            return;
-        }
-        miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        miUid = authViewModel.getCurrentUserId();
+        if (miUid == null) return;
 
         binding.recyclerViewContacts.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ContactsAdapter(new ArrayList<>());

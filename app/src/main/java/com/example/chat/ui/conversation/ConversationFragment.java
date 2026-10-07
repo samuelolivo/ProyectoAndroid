@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.chat.data.model.Chat;
 import com.example.chat.databinding.FragmentChatsBinding;
 import com.example.chat.ui.chat.ChatActivity;
+import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.MainViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ public class ConversationFragment extends Fragment {
     private ConversationAdapter adapter;
     private List<Chat> listaChats;
     private MainViewModel viewModel;
+    private AuthViewModel authViewModel;
     private String miUid;
 
     @Nullable
@@ -41,11 +42,10 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            return;
-        }
-        miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        miUid = authViewModel.getCurrentUserId();
+        if (miUid == null) return;
 
         listaChats = new ArrayList<>();
         adapter = new ConversationAdapter(listaChats);

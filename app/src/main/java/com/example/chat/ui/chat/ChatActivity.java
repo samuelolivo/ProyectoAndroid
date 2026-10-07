@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.chat.data.model.Message;
 import com.example.chat.databinding.ActivityChatBinding;
+import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.ChatViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -36,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
     private ChatViewModel viewModel;
+    private AuthViewModel authViewModel;
     private ChatAdapter adapter;
     private String miUid;
 
@@ -49,14 +51,16 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        miUid = authViewModel.getCurrentUserId();
+        if (miUid == null) {
             finish();
             return;
         }
-        miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         String chatId = getIntent().getStringExtra(EXTRA_CHAT_ID);
         String nombre = getIntent().getStringExtra(EXTRA_NOMBRE);

@@ -58,6 +58,15 @@ public class AuthRepository {
                 });
     }
 
+    public FirebaseUser getCurrentUser(){
+        return fAuth.getCurrentUser();
+    };
+
+    public String getCurrentUserId(){
+        FirebaseUser user = getCurrentUser();
+        return user != null ? user.getUid() : null;
+    };
+
     public void actualizarContrasena(String passwordActual, String nuevaContrasena, MutableLiveData<String> resultadoPass) {
         FirebaseUser user = fAuth.getCurrentUser();
 
@@ -79,6 +88,4 @@ public class AuthRepository {
             });
         }
     }
-
-
 }

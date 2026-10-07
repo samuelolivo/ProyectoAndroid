@@ -1,6 +1,7 @@
 package com.example.chat.ui.conversation;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chatActual = listaChats.get(position);
+
+        holder.binding.imgAvatar.setVisibility(View.GONE);
 
         holder.binding.txtLastMessage.setText(chatActual.getUltimoMensaje());
         String horaFormateada = formatearHora(chatActual.getTimestamp());

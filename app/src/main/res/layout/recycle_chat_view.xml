@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
@@ -15,44 +16,50 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nombre del contacto -->
+
     <View
         android:id="@+id/statusDot"
         android:layout_width="14dp"
         android:layout_height="14dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/bg_circle_online"
-        app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
-        app:layout_constraintEnd_toEndOf="@+id/imgAvatar" />
+        app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Nombre del contacto -->
+    <!-- Texto del último mensaje -->
     <TextView
         android:id="@+id/txtChatName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:text="Nombre del contacto"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/txtTime"
-        app:layout_constraintStart_toEndOf="@+id/imgAvatar"
-        app:layout_constraintTop_toTopOf="@+id/imgAvatar" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/statusDot"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Texto del último mensaje -->
+    <!-- Hora -->
     <TextView
         android:id="@+id/txtLastMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Último mensaje enviado..."
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
         app:layout_constraintEnd_toStartOf="@+id/txtTime"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imgAvatar"
         app:layout_constraintTop_toBottomOf="@+id/txtChatName" />
 
-    <!-- Hora -->
     <TextView
         android:id="@+id/txtTime"
         android:layout_width="wrap_content"

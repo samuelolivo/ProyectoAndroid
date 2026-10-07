@@ -20,8 +20,6 @@ import com.example.chat.ui.login.LoginActivity;
 import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.SettingsViewModel;
 import com.example.chat.viewModel.UserListViewModel;
-import com.google.firebase.auth.FirebaseAuth;
-
 
 public class SettingsFragment extends Fragment {
 
@@ -52,14 +50,14 @@ public class SettingsFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bng.imgProfile.setVisibility(View.GONE);
+        bng.txtChangePhoto.setVisibility(View.GONE);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-      if(FirebaseAuth.getInstance().getCurrentUser() == null){
-          return;
-      }
-      miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        miUid = authViewModel.getCurrentUserId();
+        if (miUid == null) return;
 
-      settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
-        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
         settingsViewModel.cargarMiPerfil(miUid);
 

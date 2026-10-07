@@ -22,7 +22,7 @@
     <string name="btnBackToLoginText">Ya tengo cuenta, Iniciar sesión</string>
     <string name="btnLogout">Cerrar Sesión</string>
     <string name="txtNewChat">Nuevo Chat</string>
-    <string name="titleChats">Lista De Conversaciones</string>
+    <string name="titleChats">Conversaciones</string>
     <string name="titleContactos">Contactos</string>
     <string name="statusOnline">Online</string>
     <string name="statusOffline">Offline</string>

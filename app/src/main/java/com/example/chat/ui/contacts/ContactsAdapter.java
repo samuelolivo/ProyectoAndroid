@@ -37,6 +37,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.UserVi
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User usuario = listaUsuarios.get(position);
+        holder.binding.imgProfileUser.setVisibility(ViewGroup.GONE);
 
         holder.binding.txtUserName.setText(usuario.getName());
         holder.binding.txtEmail.setText(usuario.getCorreo());
