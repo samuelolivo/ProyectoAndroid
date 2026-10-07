@@ -1,4 +1,4 @@
-package com.example.chat.ui.main;
+package com.example.chat.ui.conversation;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
+public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ChatViewHolder> {
 
 
     public interface OnChatClickListener {
@@ -27,7 +27,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     private List<Chat> listaChats;
     private OnChatClickListener listener;
 
-    public ChatAdapter(List<Chat> listaChats) {
+    public ConversationAdapter(List<Chat> listaChats) {
         this.listaChats = listaChats;
     }
 

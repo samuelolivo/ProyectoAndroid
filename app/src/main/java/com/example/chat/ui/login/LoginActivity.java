@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.chat.R;
 import com.example.chat.databinding.ActivityLoginBinding;
-import com.example.chat.ui.main.MainPage;
+import com.example.chat.ui.main.MainActivity;
 import com.example.chat.ui.register.RegisterActivity;
 import com.example.chat.viewModel.AuthViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
                if (r.equals("SUCCESS")) {
                    Toast.makeText(this, "¡Inicio exitoso!", Toast.LENGTH_SHORT).show();
-                   startActivity(new Intent(this, MainPage.class));
+                   startActivity(new Intent(this, MainActivity.class));
                    finish();
                } else {
                    Toast.makeText(this, "Error: " + r, Toast.LENGTH_LONG).show();
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, MainPage.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }
