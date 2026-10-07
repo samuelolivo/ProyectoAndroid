@@ -147,8 +147,8 @@ public class SettingsFragment extends Fragment {
             builder.setMessage("¿Estás seguro de que deseas salir de tu cuenta?");
 
             builder.setPositiveButton("Sí, salir", (dialog, which) -> {
-                mainViewModel.cerrarSesion(miUid);
                 userViewModel.changeOnlineStatus(miUid, false);
+                mainViewModel.cerrarSesion(miUid);
 
                 startActivity(new android.content.Intent(requireActivity(), LoginActivity.class));
                 requireActivity().finish();

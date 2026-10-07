@@ -19,6 +19,7 @@ import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
+
     public interface OnChatClickListener {
         void onChatClick(Chat chat, String nombreAmigo);
     }
@@ -63,7 +64,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         if (!idDelAmigo.isEmpty()) {
             FirebaseDatabase.getInstance().getReference("Users").child(idDelAmigo)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                    .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
@@ -77,6 +78,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                                 if (tiempo != null) {
                                     holder.binding.txtTime.setText(tiempo);
                                 }
+
+                                Boolean isOnline = snapshot.child("online").getValue(Boolean.class);
+
+                                if (isOnline != null && isOnline) {
+                                    // Verde si está conectado
+                                    holder.binding.statusDot.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#4CAF50")));
+                                } else {
+                                    // Gris si está desconectado
+                                    holder.binding.statusDot.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#9E9E9E")));
+                                }
+
                             }
                         }
 

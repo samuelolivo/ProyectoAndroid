@@ -67,8 +67,15 @@ public class UserRepository {
         });
     }
     public void updateOnlineStatus(String uid, boolean isOnline) {
-        db.getReference("Users").child(uid).child("online").setValue(isOnline);
-        db.getReference("Users").child(uid).child("online").onDisconnect().setValue(false);;
+        DatabaseReference estadoRef = db.getReference("Users").child(uid).child("online");
+
+        if (isOnline) {
+            estadoRef.onDisconnect().setValue(false);
+            estadoRef.setValue(true);
+        } else {
+            estadoRef.onDisconnect().cancel();
+            estadoRef.setValue(false);
+        }
     }
 
 
@@ -117,4 +124,6 @@ public class UserRepository {
                     }
                 });
     }
+
+
 }
