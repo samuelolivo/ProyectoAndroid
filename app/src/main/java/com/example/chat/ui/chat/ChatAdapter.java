@@ -23,12 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHolder> {
 
     private List<Message> listaMensajes;
     private String miUid;
 
-    public MessageAdapter(List<Message> listaMensajes, String miUid) {
+    public ChatAdapter(List<Message> listaMensajes, String miUid) {
         this.listaMensajes = listaMensajes;
         this.miUid = miUid;
     }

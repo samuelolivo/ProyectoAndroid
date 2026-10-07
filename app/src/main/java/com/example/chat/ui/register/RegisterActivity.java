@@ -11,32 +11,32 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.chat.R;
 import com.example.chat.databinding.ActivityRegisterBinding;
-import com.example.chat.ui.main.MainPage;
+import com.example.chat.ui.main.MainActivity;
 import com.example.chat.ui.login.LoginActivity;
 import com.example.chat.viewModel.AuthViewModel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegisterActivity extends AppCompatActivity {
-    private AuthViewModel fAuth;
+    private AuthViewModel authViewModel;
     ActivityRegisterBinding bng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       bng = ActivityRegisterBinding.inflate(getLayoutInflater());
-       setContentView(bng.getRoot());
+        bng = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(bng.getRoot());
 
-        fAuth = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         // Observamos el resultado de la autenticación
-        fAuth.getAuthResult().observe(this, result -> {
+        authViewModel.getAuthResult().observe(this, result -> {
             if (result != null) {
                 bng.progressBarRegister.setVisibility(View.GONE);
                 bng.btnFormRegister.setEnabled(true);
                 bng.btnFormRegister.setText(R.string.btnToLogin);
                 if (result.equals("SUCCESS")) {
                     Toast.makeText(this, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, MainPage.class));
+                    startActivity(new Intent(this, MainActivity.class));
                     finish();
                 } else {
                     Toast.makeText(this, "Error: " + result, Toast.LENGTH_LONG).show();
@@ -44,20 +44,20 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-       bng.btnBackToLogin.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-               startActivity(intent);
-           }
-       });
+        bng.btnBackToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
-       bng.btnFormRegister.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               validateForm();
-           }
-       });
+        bng.btnFormRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateForm();
+            }
+        });
     }
 
     private void validateForm() {
@@ -119,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
             bng.btnFormRegister.setText("");
             bng.btnFormRegister.setEnabled(false);
             bng.progressBarRegister.setVisibility(View.VISIBLE);
-            fAuth.register(nombre, correo, password);
+            authViewModel.register(nombre, correo, password);
         }
     }
 }

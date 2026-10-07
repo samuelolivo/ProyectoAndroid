@@ -1,6 +1,7 @@
-package com.example.chat.ui.main;
+package com.example.chat.ui.conversation;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
+public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ChatViewHolder> {
 
 
     public interface OnChatClickListener {
@@ -27,7 +28,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     private List<Chat> listaChats;
     private OnChatClickListener listener;
 
-    public ChatAdapter(List<Chat> listaChats) {
+    public ConversationAdapter(List<Chat> listaChats) {
         this.listaChats = listaChats;
     }
 
@@ -44,6 +45,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chatActual = listaChats.get(position);
+
+        holder.binding.imgAvatar.setVisibility(View.GONE);
 
         holder.binding.txtLastMessage.setText(chatActual.getUltimoMensaje());
         String horaFormateada = formatearHora(chatActual.getTimestamp());

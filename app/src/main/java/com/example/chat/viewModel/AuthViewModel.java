@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.chat.data.repository.AuthRepository;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AuthViewModel extends ViewModel {
 
@@ -32,5 +33,8 @@ public class AuthViewModel extends ViewModel {
     }
     public void logout(String miUid) {
         repository.logout(miUid, logoutLiveData);
+    }
+    public String getCurrentUserId(){
+        return repository.getCurrentUserId();
     }
 }

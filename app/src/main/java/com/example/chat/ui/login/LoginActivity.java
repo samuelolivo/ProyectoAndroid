@@ -10,13 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.chat.R;
 import com.example.chat.databinding.ActivityLoginBinding;
-import com.example.chat.ui.main.MainPage;
+import com.example.chat.ui.main.MainActivity;
 import com.example.chat.ui.register.RegisterActivity;
 import com.example.chat.viewModel.AuthViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-    AuthViewModel fAuth;
+    AuthViewModel authViewModel;
     ActivityLoginBinding bng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,22 +23,22 @@ public class LoginActivity extends AppCompatActivity {
         bng = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(bng.getRoot());
 
-        fAuth = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        fAuth.getAuthResult().observe(this, r -> {
-           if(r != null){
-               bng.progressBarLogin.setVisibility(View.GONE);
-               bng.btnFormLogin.setEnabled(true);
-               bng.btnFormLogin.setText(R.string.btnToLogin);
+        authViewModel.getAuthResult().observe(this, r -> {
+            if(r != null){
+                bng.progressBarLogin.setVisibility(View.GONE);
+                bng.btnFormLogin.setEnabled(true);
+                bng.btnFormLogin.setText(R.string.btnToLogin);
 
-               if (r.equals("SUCCESS")) {
-                   Toast.makeText(this, "¡Inicio exitoso!", Toast.LENGTH_SHORT).show();
-                   startActivity(new Intent(this, MainPage.class));
-                   finish();
-               } else {
-                   Toast.makeText(this, "Error: " + r, Toast.LENGTH_LONG).show();
-               }
-           }
+                if (r.equals("SUCCESS")) {
+                    Toast.makeText(this, "¡Inicio exitoso!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(this, "Error: " + r, Toast.LENGTH_LONG).show();
+                }
+            }
         });
 
         bng.btnFormToRegister.setOnClickListener(new View.OnClickListener() {
@@ -56,42 +55,42 @@ public class LoginActivity extends AppCompatActivity {
         bng.btnFormLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               validateForm();
+                validateForm();
             }
         });
 
 
     }
-@Override
+    @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, MainPage.class));
+        if (authViewModel.getCurrentUserId() != null) {
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }
 
     private void validateForm(){
-            // Sacamos el texto que escribió el usuario
-            String correo = bng.inputCorreo.getText().toString().trim();
-            String password = bng.inputPassword.getText().toString().trim();
+        // Sacamos el texto que escribió el usuario
+        String correo = bng.inputCorreo.getText().toString().trim();
+        String password = bng.inputPassword.getText().toString().trim();
 
-            // Validaciones súper básicas para que no envíen campos vacíos
-            if (correo.isEmpty()) {
-                bng.inputCorreo.setError("Debe introducir su correo");
-                return; // Detiene el código aquí si está vacío
-            }
+        // Validaciones súper básicas para que no envíen campos vacíos
+        if (correo.isEmpty()) {
+            bng.inputCorreo.setError("Debe introducir su correo");
+            return; // Detiene el código aquí si está vacío
+        }
 
-            if (password.isEmpty()) {
-                bng.inputPassword.setError("Debe introducir su contraseña");
-                return;
-            }
+        if (password.isEmpty()) {
+            bng.inputPassword.setError("Debe introducir su contraseña");
+            return;
+        }
 
         bng.btnFormLogin.setText("");
         bng.btnFormLogin.setEnabled(false);
         bng.progressBarLogin.setVisibility(View.VISIBLE);
 
-            fAuth.login(correo, password);
+        authViewModel.login(correo, password);
 
-}
+    }
 }

@@ -14,11 +14,11 @@ import com.example.chat.databinding.RecycleUserViewBinding;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.UserViewHolder> {
 
     private List<User> listaUsuarios;
 
-    public UserAdapter(List<User> listaUsuarios) {
+    public ContactsAdapter(List<User> listaUsuarios) {
         this.listaUsuarios = listaUsuarios;
     }
 
@@ -37,6 +37,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User usuario = listaUsuarios.get(position);
+        holder.binding.imgProfileUser.setVisibility(ViewGroup.GONE);
 
         holder.binding.txtUserName.setText(usuario.getName());
         holder.binding.txtEmail.setText(usuario.getCorreo());
