@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -38,16 +40,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        ViewCompat.setOnApplyWindowInsetsListener(
+                binding.getRoot(),
+                (view, insets) -> {
+                    int top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+                    int bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+                    view.setPadding(view.getPaddingLeft(), top, view.getPaddingRight(), bottom);
+
+                    return insets;
+                }
+        );
+
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        miUid = authViewModel.getCurrentUserId();
+
+        if (miUid == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
         }
 
-        miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         userViewModel = new ViewModelProvider(this).get(UserListViewModel.class);
         userViewModel.changeOnlineStatus(miUid, true);
 
