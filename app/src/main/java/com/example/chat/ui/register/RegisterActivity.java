@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.chat.R;
 import com.example.chat.databinding.ActivityRegisterBinding;
-import com.example.chat.ui.main.MainPage;
+import com.example.chat.ui.main.MainActivity;
 import com.example.chat.ui.login.LoginActivity;
 import com.example.chat.viewModel.AuthViewModel;
 
@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
                 bng.btnFormRegister.setText(R.string.btnToLogin);
                 if (result.equals("SUCCESS")) {
                     Toast.makeText(this, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, MainPage.class));
+                    startActivity(new Intent(this, MainActivity.class));
                     finish();
                 } else {
                     Toast.makeText(this, "Error: " + result, Toast.LENGTH_LONG).show();

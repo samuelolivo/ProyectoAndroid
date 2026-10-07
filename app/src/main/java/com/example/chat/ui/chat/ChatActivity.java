@@ -36,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
     private ChatViewModel viewModel;
-    private MessageAdapter adapter;
+    private ChatAdapter adapter;
     private String miUid;
 
     private final ActivityResultLauncher<PickVisualMediaRequest> pickImage =
@@ -67,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.txtChatTitle.setText(nombre);
 
         binding.recyclerViewMessages.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MessageAdapter(new ArrayList<>(), miUid);
+        adapter = new ChatAdapter(new ArrayList<>(), miUid);
         binding.recyclerViewMessages.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);

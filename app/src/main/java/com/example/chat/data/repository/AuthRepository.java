@@ -31,10 +31,9 @@ public class AuthRepository {
     }
 
     public void logout(String miUid, MutableLiveData<Boolean> logoutResult) {
-        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
-            FirebaseAuth.getInstance().signOut();
-            logoutResult.setValue(true);
-        });
+        usersRef.child(miUid).child("online").setValue(false);
+        FirebaseAuth.getInstance().signOut();
+        logoutResult.setValue(true);
     }
 
     public void register(String nombre, String email, String password, MutableLiveData<String> authResult) {
@@ -59,12 +58,6 @@ public class AuthRepository {
                 });
     }
 
-    public void cerrarSesion(String miUid, MutableLiveData<Boolean> logoutResult) {
-        usersRef.child(miUid).child("online").setValue(false).addOnCompleteListener(task -> {
-            FirebaseAuth.getInstance().signOut();
-            logoutResult.setValue(true);
-        });
-    }
     public void actualizarContrasena(String passwordActual, String nuevaContrasena, MutableLiveData<String> resultadoPass) {
         FirebaseUser user = fAuth.getCurrentUser();
 

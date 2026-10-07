@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.chat.R;
 import com.example.chat.data.repository.UserRepository;
-import com.example.chat.ui.main.MainPage;
+import com.example.chat.ui.main.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -57,7 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         // Para que al tocar la notificación se abra la app
-        Intent intent = new Intent(this, MainPage.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_IMMUTABLE);

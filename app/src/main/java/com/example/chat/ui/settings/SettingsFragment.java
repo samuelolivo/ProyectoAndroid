@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.chat.databinding.FragmentSettingsBinding;
 import com.example.chat.ui.login.LoginActivity;
-import com.example.chat.viewModel.MainViewModel;
+import com.example.chat.viewModel.AuthViewModel;
 import com.example.chat.viewModel.SettingsViewModel;
 import com.example.chat.viewModel.UserListViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +27,7 @@ public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding bng;
     private String miUid;
-    private MainViewModel mainViewModel;
+    private AuthViewModel authViewModel;
     private UserListViewModel userViewModel;
     private SettingsViewModel settingsViewModel;
 
@@ -59,7 +59,7 @@ public class SettingsFragment extends Fragment {
       miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
       settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
         settingsViewModel.cargarMiPerfil(miUid);
 
@@ -148,8 +148,7 @@ public class SettingsFragment extends Fragment {
 
             builder.setPositiveButton("Sí, salir", (dialog, which) -> {
                 userViewModel.changeOnlineStatus(miUid, false);
-                mainViewModel.cerrarSesion(miUid);
-
+                authViewModel.logout(miUid);
                 startActivity(new android.content.Intent(requireActivity(), LoginActivity.class));
                 requireActivity().finish();
             });
