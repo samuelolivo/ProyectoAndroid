@@ -11,6 +11,8 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -55,6 +57,17 @@ public class ChatActivity extends AppCompatActivity {
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+                binding.getRoot(),
+                (view, insets) -> {
+                    int top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+                    int bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+                    view.setPadding(view.getPaddingLeft(), top, view.getPaddingRight(), bottom);
+
+                    return insets;
+                }
+        );
 
         miUid = authViewModel.getCurrentUserId();
         if (miUid == null) {
